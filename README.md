@@ -167,5 +167,5 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## 📧 Contact
 
 For any questions or support, please contact:
-- Email: support@example.com
+- Email: otabekjon0302@gmail.com
 - GitHub Issues: [Create an issue](https://github.com/otabek0302/shop-admin/issues)
