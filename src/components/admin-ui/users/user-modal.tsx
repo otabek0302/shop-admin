@@ -1,12 +1,13 @@
 "use client";
 
+import UserRole from "./user-role";
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useModalStore } from "@/store/modal-store";
 import { useUserStore } from "@/store/user-store";
-import UserRole from "./user-role";
 
 export default function UserModal() {
   const { open, setOpen } = useModalStore();
@@ -17,6 +18,7 @@ export default function UserModal() {
     email: "",
     role: "USER",
     password: "",
+    phone: "",
   });
 
   useEffect(() => {
@@ -26,6 +28,7 @@ export default function UserModal() {
         email: editData.email ?? "",
         role: editData.role ?? "USER",
         password: "",
+        phone: editData.phone ?? "",
       });
     }
   }, [editData]);
@@ -51,6 +54,7 @@ export default function UserModal() {
         <form onSubmit={handleSubmit} className="grid gap-4">
           <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Name" required className="w-full focus-visible:ring-1 shadow-none" />
           <Input value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="Email" type="email" required className="w-full focus-visible:ring-1 shadow-none" />
+          <Input value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="Phone" type="number" required className="w-full focus-visible:ring-1 shadow-none" />
           {!editData && <Input value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} placeholder="Password" type="password" required />}
           {editData && <UserRole role={formData.role} onChange={(value) => setFormData({ ...formData, role: value })} />}
           <div className="mt-4 flex justify-end gap-2">

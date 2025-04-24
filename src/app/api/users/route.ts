@@ -35,6 +35,7 @@ export async function GET(req: Request) {
           name: true,
           email: true,
           role: true,
+          phone: true,
           createdAt: true,
         },
         orderBy: { createdAt: 'desc' },
@@ -62,7 +63,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, email, role, password } = body;
+    const { name, email, role, password, phone } = body;
 
     if (!name || !email || !role || !password) {
       return new NextResponse('Missing required fields', { status: 400 });
@@ -82,6 +83,7 @@ export async function POST(req: Request) {
         email,
         role,
         password,
+        phone,
       },
     });
 
