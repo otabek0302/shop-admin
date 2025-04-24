@@ -4,27 +4,32 @@ import { Inbox, Home, Calendar, Search, Settings } from "lucide-react";
 export const navigation = [
     {
         title: "Dashboard",
-        url: "/",
+        url: "/admin",
         icon: Home,
     },
     {
         title: "Products",
-        url: "/products",
+        url: "/admin/products",
         icon: Inbox,
     },
     {
         title: "Orders",
-        url: "/orders",
+        url: "/admin/orders",
         icon: Calendar,
     },
     {
-        title: "Customers",
-        url: "/customers",
+        title: "Categories",
+        url: "/admin/categories",
+        icon: Search,
+    },
+    {
+        title: "Users",
+        url: "/admin/users",
         icon: Search,
     },
     {
         title: "Settings",
-        url: "/settings",
+        url: "/admin/settings",
         icon: Settings,
     },
 ]

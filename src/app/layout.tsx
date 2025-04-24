@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 
 import { Poppins } from "next/font/google";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AuthProvider } from "@/utils/provider";
+import { Toaster } from "sonner";
 
 import "./globals.css";
-
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
-import AppSidebar from "@/components/layout/app-sidebar";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -25,18 +22,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SidebarProvider>
-            <main className="w-full flex flex-row">
-              <AppSidebar />
-              <div className="flex-1">
-                <Header />
-                {children}
-                <Footer />
-              </div>
-            </main>
-          </SidebarProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+            <Toaster position="top-right" richColors />
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
