@@ -39,14 +39,6 @@ export interface OrderTableToolbarProps {
     onAddClick: () => void;
 }
 
-export interface OrderModalProps {
-    open: boolean;
-    onClose: () => void;
-    initialData?: Order;
-    onSuccess: () => void;
+export interface OrderListActionsProps {
+    order: Order;
 }
-
-export interface OrderListProps {
-    orders: Order[];
-    onEdit: (order: Order) => void;
-} 

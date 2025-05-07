@@ -5,6 +5,8 @@ interface Profile {
   email: string;
   role: string;
   phone: string;
+  currentPassword?: string;
+  newPassword?: string;
 }
 
 interface ProfileStore {

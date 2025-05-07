@@ -1,279 +1,314 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { OrderModalProps, OrderStatus, OrderItem } from "@/interfaces/orders";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Minus, Plus, X } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Order, OrderStatus, OrderItem } from "@/interfaces/orders";
+import { useOrderStore } from "@/store/order-store";
+import { useModalStore } from "@/store/modal-store";
+import { toast } from "sonner";
+import { Card } from "@/components/ui/card";
+import { Plus, Minus, Search, ShoppingCart, Package, IndianRupee, X } from "lucide-react";
+import { useProductStore } from "@/store/product-store";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { getImageUrl } from "@/utils/getImageUrl";
+import { Product } from "@/interfaces/products";
+import { cn } from "@/lib/utils";
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  stock: number;
-  image: {
-    url: string;
-    public_id: string;
-  };
-}
-
-const OrderModal = ({ open, onClose, initialData, onSuccess }: OrderModalProps) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [selectedProducts, setSelectedProducts] = useState<{ [key: string]: { quantity: number; product: Product } }>({});
-  const [status, setStatus] = useState(OrderStatus.PENDING);
+const OrderModal = () => {
+  const { createOrder, updateOrder, loading, editData, setEditData } = useOrderStore();
+  const { products, fetchProducts } = useProductStore();
+  const { open, setOpen } = useModalStore();
+  const [formData, setFormData] = useState<Partial<Order>>({
+    total: 0,
+    status: OrderStatus.PENDING,
+    orderItems: [],
+  });
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const res = await fetch("/api/products");
-      const data = await res.json();
-      setProducts(data.products || []);
-    };
-    fetchProducts();
-  }, []);
-
-  useEffect(() => {
-    if (initialData) {
-      // Initialize selected products from existing order
-      const selected: { [key: string]: { quantity: number; product: Product } } = {};
-      initialData.orderItems.forEach(item => {
-        selected[item.productId] = {
-          quantity: item.quantity,
-          product: {
-            ...item.product,
-            stock: 0 // Stock will be updated when fetching products
-          }
-        };
-      });
-      setSelectedProducts(selected);
-      setStatus(initialData.status);
-    } else {
-      setSelectedProducts({});
-      setStatus(OrderStatus.PENDING);
+    if (open) {
+      fetchProducts();
     }
-  }, [initialData]);
+  }, [open, fetchProducts]);
 
-  const handleProductToggle = (product: Product) => {
-    setSelectedProducts(prev => {
-      if (prev[product.id]) {
-        const newSelected = { ...prev };
-        delete newSelected[product.id];
-        return newSelected;
-      } else {
-        // Don't allow adding products with zero stock
-        if (product.stock <= 0) {
-          alert(`Cannot add ${product.name} - out of stock`);
-          return prev;
-        }
-        return {
-          ...prev,
-          [product.id]: {
-            quantity: 1,
-            product
-          }
-        };
+  useEffect(() => {
+    if (!open) {
+      setSearchQuery("");
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (editData) {
+      setFormData(editData);
+    } else {
+      setFormData({
+        total: 0,
+        status: OrderStatus.PENDING,
+        orderItems: [],
+      });
+    }
+  }, [editData]);
+
+  useEffect(() => {
+    const total = formData.orderItems?.reduce((sum, item) => sum + item.total, 0) || 0;
+    setFormData((prev) => ({ ...prev, total }));
+  }, [formData.orderItems]);
+
+  const filteredProducts = products.filter((product) => 
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const addOrderItem = (product: Product) => {
+    setFormData((prev) => {
+      const existingItemIndex = prev.orderItems?.findIndex((item) => item.productId === product.id) ?? -1;
+      
+      if (existingItemIndex !== -1) {
+        const newOrderItems = [...(prev.orderItems || [])];
+        const item = newOrderItems[existingItemIndex];
+        item.quantity += 1;
+        item.total = item.price * item.quantity;
+        return { ...prev, orderItems: newOrderItems };
       }
-    });
-  };
 
-  const handleQuantityChange = (productId: string, change: number) => {
-    setSelectedProducts(prev => {
-      const current = prev[productId];
-      if (!current) return prev;
-
-      const newQuantity = Math.max(1, Math.min(current.product.stock, current.quantity + change));
+      const newItem: OrderItem = {
+        productId: product.id,
+        quantity: 1,
+        price: product.price,
+        total: product.price,
+        product: {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+        },
+      };
       return {
         ...prev,
-        [productId]: {
-          ...current,
-          quantity: newQuantity
-        }
+        orderItems: [...(prev.orderItems || []), newItem],
       };
     });
+    setSearchQuery("");
   };
 
-  const calculateTotal = () => {
-    return Object.values(selectedProducts).reduce((sum, { quantity, product }) => {
-      return sum + (product.price * quantity);
-    }, 0);
+  const removeOrderItem = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      orderItems: prev.orderItems?.filter((_, i) => i !== index),
+    }));
+  };
+
+  const updateOrderItem = (index: number, field: keyof OrderItem, value: string | number) => {
+    setFormData((prev) => {
+      const newOrderItems = [...(prev.orderItems || [])];
+      const item = newOrderItems[index];
+      
+      if (field === "quantity") {
+        const newQuantity = typeof value === "number" ? value : parseInt(value as string);
+        if (newQuantity > 0) {
+          item.quantity = newQuantity;
+          item.total = item.price * item.quantity;
+        }
+      }
+      
+      newOrderItems[index] = item;
+      return { ...prev, orderItems: newOrderItems };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (Object.keys(selectedProducts).length === 0) return;
-
-    const orderItems: OrderItem[] = Object.entries(selectedProducts).map(([productId, { quantity, product }]) => ({
-      productId,
-      product,
-      quantity,
-      price: product.price,
-      total: product.price * quantity
-    }));
-
-    const url = initialData ? `/api/orders/${initialData.id}` : "/api/orders";
-    const method = initialData ? "PATCH" : "POST";
-
+    if (!formData.orderItems?.length) {
+      toast.error("Please add at least one item to the order");
+      return;
+    }
     try {
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: orderItems,
-          total: calculateTotal(),
-          status
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || data.details || "Failed to process order");
+      if (editData) {
+        await updateOrder(editData.id, formData);
+        toast.success("Order updated successfully");
+      } else {
+        await createOrder(formData);
+        toast.success("Order created successfully");
       }
-
-      onSuccess();
-      onClose();
-    } catch (error) {
-      alert(error instanceof Error ? error.message : "An unexpected error occurred");
+      setOpen(false);
+      setEditData(null);
+    } catch (err) {
+      console.error("[ORDER_MODAL_ERROR]", err);
+      toast.error("Failed to save order");
     }
   };
 
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+    if (!isOpen) setEditData(null);
+  };
+
+  const ProductCard = ({ product, onClick }: { product: Product; onClick: () => void }) => (
+    <Card 
+      key={product.id} 
+      className={cn(
+        "p-4 cursor-pointer transition-all duration-200",
+        "hover:shadow-md hover:border-primary/20",
+        "active:scale-[0.98]"
+      )} 
+      onClick={onClick}
+    >
+      <div className="flex items-center gap-4">
+        <div className="relative w-16 h-16 rounded-lg overflow-hidden border bg-muted">
+          <Image src={getImageUrl(product.image)} alt={product.name} fill className="object-cover" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-base truncate">{product.name}</p>
+          <p className="text-sm text-muted-foreground mt-1">₹{product.price.toFixed(2)}</p>
+        </div>
+        <Button size="sm" variant="ghost" className="rounded-full">
+          <Plus className="w-5 h-5" />
+        </Button>
+      </div>
+    </Card>
+  );
+
+  const OrderItemCard = ({ item, index }: { item: OrderItem; index: number }) => (
+    <Card className="p-4 transition-all duration-200 hover:shadow-sm">
+      <div className="flex items-center gap-4">
+        <div className="relative w-16 h-16 rounded-lg overflow-hidden border bg-muted">
+          <Image src={getImageUrl(item.product.image)} alt={item.product.name} fill className="object-cover" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-base truncate">{item.product.name}</p>
+          <p className="text-sm text-muted-foreground mt-1">₹{item.price.toFixed(2)} each</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button 
+            size="icon" 
+            variant="outline" 
+            onClick={() => updateOrderItem(index, "quantity", Math.max(1, item.quantity - 1))} 
+            className="h-9 w-9 rounded-full" 
+            disabled={item.quantity <= 1}
+          >
+            <Minus className="w-4 h-4" />
+          </Button>
+          <Input 
+            type="number" 
+            min="1" 
+            value={item.quantity} 
+            onChange={(e) => updateOrderItem(index, "quantity", parseInt(e.target.value) || 1)} 
+            className="w-16 text-center h-9" 
+          />
+          <Button 
+            size="icon" 
+            variant="outline" 
+            onClick={() => updateOrderItem(index, "quantity", item.quantity + 1)} 
+            className="h-9 w-9 rounded-full"
+          >
+            <Plus className="w-4 h-4" />
+          </Button>
+          <Button 
+            size="icon" 
+            variant="ghost" 
+            onClick={() => removeOrderItem(index)} 
+            className="h-9 w-9 rounded-full text-destructive hover:text-destructive hover:bg-destructive/10"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+      <div className="mt-3 text-right text-sm font-medium text-primary">
+        Total: ₹{item.total.toFixed(2)}
+      </div>
+    </Card>
+  );
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>{initialData ? "Edit Order" : "Add New Order"}</DialogTitle>
-        </DialogHeader>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-4">
-            <Label>Select Products</Label>
-            <div className="border rounded-md divide-y max-h-[300px] overflow-y-auto">
-              {products.map((product) => (
-                <div key={product.id} className="p-4 flex items-center gap-4">
-                  <Checkbox
-                    checked={!!selectedProducts[product.id]}
-                    onCheckedChange={() => handleProductToggle(product)}
-                  />
-                  <div className="flex-1 flex items-center gap-3">
-                    <Image 
-                      src={getImageUrl(product.image)} 
-                      alt={product.name} 
-                      width={40} 
-                      height={40} 
-                      className="rounded-md border object-cover" 
-                    />
-                    <div>
-                      <p className="font-medium">{product.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        ₹{product.price.toFixed(2)} (Stock: {product.stock})
-                      </p>
-                    </div>
-                  </div>
-                  {selectedProducts[product.id] && (
-                    <div className="flex items-center gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={() => handleQuantityChange(product.id, -1)}
-                        disabled={selectedProducts[product.id].quantity <= 1}
-                      >
-                        <Minus className="h-4 w-4" />
-                      </Button>
-                      <span className="w-8 text-center">
-                        {selectedProducts[product.id].quantity}
-                      </span>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={() => handleQuantityChange(product.id, 1)}
-                        disabled={selectedProducts[product.id].quantity >= product.stock}
-                      >
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              ))}
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogContent className="max-w-[1400px] h-[90vh] p-0 overflow-hidden">
+        <div className="flex h-full">
+          {/* Left Panel - Product Selection */}
+          <div className="flex-1 max-w-[500px] border-r p-6 flex flex-col bg-muted/5">
+            <DialogHeader className="pb-6">
+              <DialogTitle className="flex items-center gap-2 text-xl">
+                <ShoppingCart className="w-6 h-6 text-primary" />
+                {editData ? "Edit Order" : "Create Order"}
+              </DialogTitle>
+            </DialogHeader>
+            
+            <div className="relative mb-6">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              <Input 
+                placeholder="Search products..." 
+                value={searchQuery} 
+                onChange={(e) => setSearchQuery(e.target.value)} 
+                className="pl-9 h-11 bg-background" 
+              />
             </div>
-          </div>
 
-          {Object.keys(selectedProducts).length > 0 && (
-            <div className="space-y-2">
-              <Label>Selected Items</Label>
-              <div className="border rounded-md divide-y">
-                {Object.entries(selectedProducts).map(([productId, { quantity, product }]) => (
-                  <div key={productId} className="p-4 flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <Image 
-                        src={getImageUrl(product.image)} 
-                        alt={product.name} 
-                        width={40} 
-                        height={40} 
-                        className="rounded-md border object-cover" 
-                      />
-                      <div>
-                        <p className="font-medium">{product.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {quantity} x ₹{product.price.toFixed(2)} = ₹{(product.price * quantity).toFixed(2)}
-                        </p>
-                      </div>
-                    </div>
-                    <Button 
-                      type="button" 
-                      variant="ghost" 
-                      size="icon"
-                      onClick={() => handleProductToggle(product)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
+            <ScrollArea className="flex-1 pr-4">
+              <div className="grid grid-cols-1 gap-4">
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} onClick={() => addOrderItem(product)} />
                 ))}
               </div>
-              <div className="flex justify-between items-center pt-2">
-                <span className="font-medium">Total:</span>
-                <span className="font-bold">₹{calculateTotal().toFixed(2)}</span>
+            </ScrollArea>
+          </div>
+
+          {/* Right Panel - Order Items */}
+          <div className="flex-1 max-w-[800px] p-6 flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-semibold flex items-center gap-2">
+                <Package className="w-5 h-5 text-primary" />
+                Order Items
+              </h3>
+              <Badge variant="outline" className="text-sm px-3 py-1">
+                {formData.orderItems?.length || 0} items
+              </Badge>
+            </div>
+
+            <ScrollArea className="flex-1 pr-4">
+              <div className="space-y-4">
+                {formData.orderItems?.map((item, index) => (
+                  <OrderItemCard key={index} item={item} index={index} />
+                ))}
+              </div>
+            </ScrollArea>
+
+            <div className="border-t pt-6 mt-6">
+              <div className="flex items-center justify-end mb-6">
+                <div className="text-right">
+                  <div className="text-sm text-muted-foreground">Total Amount</div>
+                  <div className="text-3xl font-bold flex items-center gap-1 text-primary">
+                    <IndianRupee className="w-6 h-6" />
+                    {formData.total?.toFixed(2)}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setOpen(false);
+                    setEditData(null);
+                  }}
+                  className="h-11 px-6"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={loading || !formData.orderItems?.length} 
+                  onClick={handleSubmit}
+                  className="h-11 px-6"
+                >
+                  {loading ? "Saving..." : editData ? "Update Order" : "Create Order"}
+                </Button>
               </div>
             </div>
-          )}
-
-          <div className="grid gap-2">
-            <Label>Status</Label>
-            <Select value={status} onValueChange={(value: OrderStatus) => setStatus(value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={OrderStatus.PENDING}>Pending</SelectItem>
-                <SelectItem value={OrderStatus.COMPLETED}>Completed</SelectItem>
-                <SelectItem value={OrderStatus.CANCELLED}>Cancelled</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
-
-          <div className="flex justify-end gap-2 pt-4">
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button 
-              type="submit" 
-              disabled={Object.keys(selectedProducts).length === 0}
-            >
-              {initialData ? "Update Order" : "Create Order"}
-            </Button>
-          </div>
-        </form>
+        </div>
       </DialogContent>
     </Dialog>
   );

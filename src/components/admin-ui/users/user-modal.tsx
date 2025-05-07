@@ -11,7 +11,7 @@ import { useUserStore } from "@/store/user-store";
 
 export default function UserModal() {
   const { open, setOpen } = useModalStore();
-  const { editData, createUser, editUser } = useUserStore();
+  const { editData, createUser, editUser, setEditData } = useUserStore();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -30,8 +30,16 @@ export default function UserModal() {
         password: "",
         phone: editData.phone ?? "",
       });
+    } else {
+      setFormData({
+        name: "",
+        email: "",
+        role: "USER",
+        password: "",
+        phone: "",
+      });
     }
-  }, [editData]);
+  }, [editData, open]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,23 +51,42 @@ export default function UserModal() {
     }
 
     setOpen(false);
+    setEditData(null);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) {
+          setEditData(null);
+        }
+        setOpen(isOpen);
+      }}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{editData ? "Edit User" : "Add User"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-4">
-          <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Name" required className="w-full focus-visible:ring-1 shadow-none" />
+          <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Name" className="w-full focus-visible:ring-1 shadow-none" />
           <Input value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="Email" type="email" required className="w-full focus-visible:ring-1 shadow-none" />
-          <Input value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="Phone" type="number" required className="w-full focus-visible:ring-1 shadow-none" />
-          {!editData && <Input value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} placeholder="Password" type="password" required />}
-          {editData && <UserRole role={formData.role} onChange={(value) => setFormData({ ...formData, role: value })} />}
+          <Input value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="Phone" className="w-full focus-visible:ring-1 shadow-none" />
+          <Input value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} placeholder="Password" type="password" required />
+          <UserRole role={formData.role} onChange={(value) => setFormData({ ...formData, role: value })} />
           <div className="mt-4 flex justify-end gap-2">
-            <Button type="submit" variant="outline" className="bg-primary text-white hover:bg-primary/90 hover:text-white cursor-pointer">{editData ? "Update" : "Create"}</Button>
-            <Button type="button" variant="outline" className="bg-gray-200 hover:bg-gray-100 cursor-pointer" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button type="submit" variant="outline" className="bg-primary text-white hover:bg-primary/90 hover:text-white cursor-pointer">
+              {editData ? "Update" : "Create"}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="bg-gray-200 hover:bg-gray-100 cursor-pointer"
+              onClick={() => {
+                setOpen(false);
+                setEditData(null);
+              }}>
+              Cancel
+            </Button>
           </div>
         </form>
       </DialogContent>

@@ -1,12 +1,11 @@
-import ProductModal from "./product-modal";
-
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useProductStore } from "@/store/product-store";
 import { useModalStore } from "@/store/modal-store";
+
 const ProductTableToolbar = () => {
   const { setOpen } = useModalStore();
-  const { search, setSearch } = useProductStore();
+  const { search, setSearch, setEditData } = useProductStore();
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -16,9 +15,11 @@ const ProductTableToolbar = () => {
     <>
       <div className="flex items-center justify-between">
         <Input placeholder="Filter..." value={search} onChange={handleFilterChange} className="h-10 w-[150px] lg:w-[250px]" />
-        <Button onClick={() => setOpen(true)}>Add Product</Button>
+        <Button onClick={() => {
+          setEditData(null);
+          setOpen(true);
+        }}>Add Product</Button>
       </div>
-      <ProductModal />
     </>
   );
 };

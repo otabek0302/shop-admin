@@ -8,6 +8,7 @@ interface CategoryState {
     search: string;
     deleteData: Category | null;
     editData: Category | null;
+    loading: boolean;
     setDeleteData: (data: Category | null) => void;
     setEditData: (data: Category | null) => void;
     setSearch: (search: string) => void;
@@ -25,15 +26,23 @@ export const useCategoryStore = create<CategoryState>((set, get) => ({
     search: "",
     deleteData: null,
     editData: null,
+    loading: true,
     setDeleteData: (data) => set({ deleteData: data }),
     setEditData: (data) => set({ editData: data }),
     setSearch: (search) => set({ search }),
     setPage: (page) => set({ page }),
     fetchCategories: async () => {
-        const { search, page } = get();
-        const res = await fetch(`/api/categories?search=${search}&page=${page}`);
-        const data = await res.json();
-        set({ categories: data.categories, total: data.total });
+        set({ loading: true });
+        try {
+            const { search, page } = get();
+            const res = await fetch(`/api/categories?search=${search}&page=${page}`);
+            const data = await res.json();
+            set({ categories: data.categories, total: data.total });
+        } catch (error) {
+            console.error("[FETCH_CATEGORIES_ERROR]", error);
+        } finally {
+            set({ loading: false });
+        }
     },
     deleteCategory: async (id: string) => {
         const res = await fetch(`/api/categories/${id}`, { method: "DELETE" });

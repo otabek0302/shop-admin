@@ -1,4 +1,4 @@
-import { Inbox, Home, Calendar, Search, Settings } from "lucide-react";
+import { Inbox, Home, Calendar, Search, User, Users } from "lucide-react";
 
 // Menu items.
 export const navigation = [
@@ -25,11 +25,11 @@ export const navigation = [
     {
         title: "Users",
         url: "/admin/users",
-        icon: Search,
+        icon: Users,
     },
     {
-        title: "Settings",
-        url: "/admin/settings",
-        icon: Settings,
+        title: "Profile",
+        url: "/admin/profile",
+        icon: User,
     },
 ]

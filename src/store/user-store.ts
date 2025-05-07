@@ -17,6 +17,7 @@ interface UserStore {
     search: string;
     deleteData: User | null;
     editData: User | null;
+    loading: boolean;
     setDeleteData: (data: User | null) => void;
     setEditData: (data: User | null) => void;
     setSearch: (search: string) => void;
@@ -34,6 +35,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     search: "",
     deleteData: null,
     editData: null,
+    loading: true,
 
     setDeleteData: (data) => set({ deleteData: data }),
     setEditData: (data) => set({ editData: data }),
@@ -41,6 +43,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     setPage: (page) => set({ page }),
 
     fetchUsers: async () => {
+        set({ loading: true });
         try {
             const { search, page } = get();
             const res = await fetch(`/api/users?search=${search}&page=${page}`);
@@ -48,6 +51,8 @@ export const useUserStore = create<UserStore>((set, get) => ({
             set({ users: data.users, total: data.total });
         } catch (err) {
             console.error("[FETCH_USERS_ERROR]", err);
+        } finally {
+            set({ loading: false });
         }
     },
 

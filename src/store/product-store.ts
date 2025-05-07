@@ -8,6 +8,7 @@ interface ProductState {
     search: string;
     deleteData: Product | null;
     editData: Product | null;
+    loading: boolean;
     setDeleteData: (data: Product | null) => void;
     setEditData: (data: Product | null) => void;
     setSearch: (search: string) => void;
@@ -25,15 +26,23 @@ export const useProductStore = create<ProductState>((set, get) => ({
     search: "",
     deleteData: null,
     editData: null,
+    loading: true,
     setDeleteData: (data) => set({ deleteData: data }),
     setEditData: (data) => set({ editData: data }),
     setSearch: (search) => set({ search }),
     setPage: (page) => set({ page }),
     fetchProducts: async () => {
-        const { search, page } = get();
-        const res = await fetch(`/api/products?search=${search}&page=${page}`);
-        const data = await res.json();
-        set({ products: data.products, total: data.total });
+        set({ loading: true });
+        try {
+            const { search, page } = get();
+            const res = await fetch(`/api/products?search=${search}&page=${page}`);
+            const data = await res.json();
+            set({ products: data.products, total: data.total });
+        } catch (error) {
+            console.error("[FETCH_PRODUCTS_ERROR]", error);
+        } finally {
+            set({ loading: false });
+        }
     },
     deleteProduct: async (id: string) => {
         const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
