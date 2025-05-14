@@ -12,7 +12,7 @@ model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String?
   email     String   @unique
-  phone     String?  @default(0)
+  phone     String?  @default("")
   password  String
   role      Role     @default(USER)
   createdAt DateTime @default(now())
@@ -71,6 +71,7 @@ enum Role {
 
 enum OrderStatus {
   PENDING
+  PROCESSING
   COMPLETED
   CANCELLED
 }

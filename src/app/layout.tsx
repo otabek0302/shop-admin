@@ -24,8 +24,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={`${poppins.variable} antialiased`}>
         <AuthProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
-            <Toaster position="top-right" richColors />
+              {children}
+              <Toaster position="top-right" richColors />
           </ThemeProvider>
         </AuthProvider>
       </body>

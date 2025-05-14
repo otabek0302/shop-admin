@@ -3,7 +3,7 @@
   "tabWidth": 2,
   "useTabs": false,
   "semi": true,
-  "singleQuote": false,
+  "singleQuote": true,
   "trailingComma": "es5",
   "bracketSpacing": true,
   "bracketSameLine": true,
@@ -12,5 +12,7 @@
   "singleAttributePerLine": false,
   "htmlWhitespaceSensitivity": "css",
   "jsxSingleQuote": false,
-  "quoteProps": "as-needed"
-} 
+  "quoteProps": "as-needed",
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindConfig": "./tailwind.config.ts"
+}

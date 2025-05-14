@@ -12,7 +12,7 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <header className="px-4">
+    <header className="px-4 z-50">
       <div className="flex items-center justify-between gap-2 py-2.5 border-b border-border">
         <div className="flex items-center justify-center">
           {!pathname.includes("/admin") ? (
@@ -20,7 +20,7 @@ const Header = () => {
               <Image src={logo} alt="logo" fill className="object-cover object-center" />
             </div>
           ) : (
-            <SidebarTrigger className="h-9 w-9 border hover:bg-accent hover:text-primary text-primary cursor-pointer" size="icon" />
+            <SidebarTrigger className="h-9 w-9 border hover:bg-accent hover:text-primary text-primary cursor-pointer z-50" size="icon" />
           )}
         </div>
         <div className="flex items-center justify-center gap-2">

@@ -40,7 +40,7 @@ export default function DashboardPage() {
   if (loading || !data) return <div className="p-4">Loading...</div>;
 
   return (
-    <section className="p-4 space-y-4">
+    <section className="p-4 space-y-4 h-full">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <Card>
           <CardHeader>

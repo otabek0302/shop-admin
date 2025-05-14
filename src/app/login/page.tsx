@@ -20,11 +20,8 @@ const LoginPage = () => {
     redirect("/");
   }
 
-  console.log(status);
 
   const handleSubmit = async (data: { email: string; password: string }) => {
-    console.log(data);
-
     const res = await signIn("credentials", {
       email: data?.email,
       password: data?.password,
@@ -32,8 +29,7 @@ const LoginPage = () => {
     });
 
     if (res?.error) {
-      console.error("Login failed:", res.error); // ← Debug
-      // setError("Invalid email or password");
+      console.error("Login failed:", res.error);
     }
   };
 
