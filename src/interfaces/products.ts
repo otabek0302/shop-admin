@@ -36,6 +36,30 @@ export interface Product {
     updatedAt: string;
 }
 
+export interface ProductInBusket {
+    id: string;
+    name: string;
+    description: string;
+    brand: string;
+    price: number;
+    stock: number;
+    sales: number;
+    image: {
+        url: string;
+        public_id: string;
+    };
+    category: {
+        id: string;
+        name: string;
+        createdAt: string;
+        updatedAt: string;
+    } | string;
+    orders: object;
+    createdAt: string;
+    updatedAt: string;
+    quantity: number;
+}
+
 export interface ProductCardProps {
     product: Product;
 }

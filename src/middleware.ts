@@ -13,13 +13,17 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/dashboard', request.url));
     }
 
+    if (isAuthPage && token) {
+        return NextResponse.redirect(new URL('/', request.url));
+    }
+
     if (!token && !isAuthPage) {
-        return NextResponse.redirect(new URL('/auth/login', request.url));
+        return NextResponse.redirect(new URL('/login', request.url));
     }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ["/dashboard", "/products", "/orders"],
+    matcher: ["/dashboard", "/products", "/orders", "/"],
 };

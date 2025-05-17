@@ -11,4 +11,3 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     return React.createElement(SessionProvider, null, children);
 };
-
