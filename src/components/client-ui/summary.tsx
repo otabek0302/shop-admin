@@ -1,21 +1,23 @@
 'use client';
 
 import Image from 'next/image';
+import Counter from '@/components/ui/counter';
 
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { X, IndianRupee, AlertTriangle } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { X, IndianRupee, AlertTriangle } from 'lucide-react';
-import Counter from '@/components/ui/counter';
 
 import { useClientOrderStore } from '@/store/client-order-store';
 import { getStockStatus } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 const Summary = () => {
   const { busket, discount, applyDiscount, getSubtotal, getTotal, updateQuantity, createOrder } = useClientOrderStore();
+  const { t } = useTranslation();
 
   const [discountAmount, setDiscountAmount] = useState('');
   const subtotal = getSubtotal();
@@ -35,16 +37,16 @@ const Summary = () => {
         quantity: product.quantity,
         price: product.price,
       })),
-      status: "PENDING",
+      status: 'PENDING',
     });
   };
 
   return (
     <div className="rounded-lg bg-white p-6 shadow-md">
-      <h2 className="mb-4 text-xl font-semibold">Review Order</h2>
+      <h2 className="mb-4 text-xl font-semibold">{t('components.summary.title')}</h2>
 
       {cartItems.length === 0 ? (
-        <p className="my-8 text-center text-gray-500">Your cart is empty</p>
+        <p className="my-8 text-center text-gray-500">{t('components.summary.empty-cart')}</p>
       ) : (
         <>
           <div className="mb-6 space-y-4">
@@ -80,12 +82,7 @@ const Summary = () => {
 
                     {/* Quantity controls */}
                     <div className="mt-1">
-                      <Counter
-                        productId={product.id}
-                        value={product.quantity}
-                        max={product.stock}
-                        size="sm"
-                      />
+                      <Counter productId={product.id} value={product.quantity} max={product.stock} size="sm" />
                     </div>
                   </div>
 
@@ -106,17 +103,17 @@ const Summary = () => {
 
           {/* Discount input */}
           <div className="mb-6">
-            <Label htmlFor="discount-amount">Discount Amount</Label>
+            <Label htmlFor="discount-amount">{t('components.summary.discount-amount')}</Label>
             <div className="mt-1 flex">
-              <Input id="discount-amount" type="number" min="0" step="0.01" value={discountAmount} onChange={(e) => setDiscountAmount(e.target.value)} placeholder="Enter amount" className="rounded-r-none" />
+              <Input id="discount-amount" type="number" min="0" step="0.01" value={discountAmount} onChange={(e) => setDiscountAmount(e.target.value)} placeholder={t('components.summary.discount-amount')} className="rounded-r-none" />
               <Button className="rounded-l-none" onClick={handleApplyDiscount}>
-                Apply
+                {t('components.summary.apply-discount')}
               </Button>
             </div>
             {discount > 0 && (
               <p className="mt-1 flex items-center gap-1 text-sm text-green-600">
                 <IndianRupee className="h-3 w-3" />
-                Discount applied: -{discount.toLocaleString()}
+                {t('components.summary.discount-applied', { discount: discount.toLocaleString() })}
               </p>
             )}
           </div>
@@ -124,7 +121,7 @@ const Summary = () => {
           {/* Summary pricing */}
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span>Subtotal</span>
+              <span>{t('components.summary.subtotal')}</span>
               <span className="flex items-center gap-1">
                 <IndianRupee className="h-4 w-4" />
                 {subtotal.toLocaleString()}
@@ -132,14 +129,14 @@ const Summary = () => {
             </div>
             {discount > 0 && (
               <div className="flex justify-between text-green-600">
-                <span>Discount</span>
+                <span>{t('components.summary.discount')}</span>
                 <span className="flex items-center gap-1">
                   <IndianRupee className="h-3 w-3" />-{discount.toLocaleString()}
                 </span>
               </div>
             )}
             <div className="flex justify-between border-t pt-2 text-lg font-bold">
-              <span>Total</span>
+              <span>{t('components.summary.total')}</span>
               <span className="flex items-center gap-1">
                 <IndianRupee className="h-5 w-5" />
                 {total.toLocaleString()}
@@ -149,7 +146,7 @@ const Summary = () => {
 
           {/* Order button */}
           <Button className="mt-6 w-full" size="lg" onClick={handleCreateOrder} disabled={cartItems.length === 0}>
-            Create Order
+            {t('components.summary.create-order')}
           </Button>
         </>
       )}

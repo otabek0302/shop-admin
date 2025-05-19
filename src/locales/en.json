@@ -1,0 +1,358 @@
+{
+  "app-page": {},
+  "orders-page": {},
+  "not-found-page": {},
+  "admin-page": {
+    "categories-page": {},
+    "products-page": {},
+    "users-page": {},
+    "orders-page": {},
+    "profile-page": {}
+  },
+  "components": {
+    "layout": {
+      "header": {
+        "title": "Shop Store",
+        "description": "Shop Store is a platform for buying and selling products and services."
+      }
+    },
+    "footer": {
+      "links": {
+        "terms-and-conditions": "Terms & Conditions",
+        "privacy-policy": "Privacy Policy",
+        "cookies": "Cookies"
+      }
+    },
+    "header-actions": {},
+    "login-form": {
+      "title": "Welcome back",
+      "description": "Login to your account",
+      "email": "Email",
+      "password": "Password",
+      "forgot-password": "Forgot your password?"
+    },
+    "sidebar": {
+      "home": "Home",
+      "products": "Products",
+      "orders": "Orders",
+      "categories": "Categories",
+      "users": "Users",
+      "profile": "Profile"
+    },
+    "product-card": {
+      "add-to-cart": "Add to Cart",
+      "out-of-stock": "Out of Stock",
+      "low-stock": "Low Stock",
+      "in-stock": "In Stock"
+    },
+    "product-list": {
+      "no-products": "No products available."
+    },
+    "summary": {
+      "title": "Review Order",
+      "empty-cart": "Your cart is empty",
+      "discount-amount": "Discount Amount",
+      "apply-discount": "Apply Discount",
+      "discount-applied": "Discount applied: -{discount}",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "create-order": "Create Order"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "previous-month": "Previous Month",
+      "next-month": "Next Month",
+      "card": {
+        "orders": "Orders",
+        "revenue": "Revenue",
+        "products": "Products",
+        "stock-status": "Stock Status"
+      },
+      "content": {
+        "completed-orders": "Completed orders",
+        "cancelled-orders": "Cancelled orders",
+        "pending-orders": "Pending orders",
+        "processing-orders": "Processing orders",
+        "total-products": "Total products",
+        "products-in-store": "Products in store",
+        "sold-products": "Sold products",
+        "store-value": "Store value",
+        "revenue-in-stock": "Revenue in stock",
+        "out-of-stock": "Out of stock",
+        "out-of-stock-items": "Out of stock items",
+        "no-out-of-stock": "No products are out of stock",
+        "no-category": "No category"
+      },
+      "errors": {
+        "fetch": "Failed to fetch dashboard data"
+      }
+    },
+    "admin-ui": {
+      "product": {
+        "product-toolbar": {
+          "add-product": "Add Product",
+          "search": "Search"
+        },
+        "product-modal": {
+          "add-title": "Add New Product",
+          "edit-title": "Edit Product",
+          "add-description": "Fill in the product details below",
+          "edit-description": "Edit the product details below",
+          "label": {
+            "name": "Product Name",
+            "description": "Description",
+            "brand": "Brand",
+            "price": "Price",
+            "stock": "Stock"
+          },
+          "image": {
+            "label": "Product Image",
+            "browse-files": "Browse Files",
+            "image-placeholder": "Upload an image",
+            "image-max-size": "Maximum file size: 10MB",
+            "image-selected": "Image Selected",
+            "image-removed": "Image Removed",
+            "image-error": "Error uploading image"
+          },
+          "category": {
+            "label": "Category",
+            "placeholder": "Select a category"
+          },
+          "cancel": "Cancel",
+          "create": "Create Product",
+          "update": "Update Product"
+        },
+        "product-card": {
+          "summary": {
+            "title": "Summary",
+            "brand": "Brand",
+            "description": "Description"
+          },
+          "sales": "Sales",
+          "remaining-products": "Remaining Products"
+        },
+        "product-list": {
+          "no-products": "No products found",
+          "try-adjusting-filters": "Try adjusting your filters or adding a new product."
+        }
+      },
+      "order": {
+        "order-toolbar": {
+          "add-order": "Add Order",
+          "search": "Search"
+        },
+        "order-list": {
+          "status": {
+            "pending": "Pending",
+            "processing": "Processing",
+            "completed": "Completed",
+            "cancelled": "Cancelled"
+          },
+          "table": {
+            "header": {
+              "id": "ID",
+              "total": "Total",
+              "status": "Status",
+              "items": "Items",
+              "created": "Created",
+              "actions": "Actions"
+            }
+          },
+          "messages": {
+            "no-orders": "No orders found",
+            "try-adjusting-filters": "Try adjusting your filters or adding a new order."
+          }
+        },
+        "order-item": {
+          "status": "Status",
+          "no-stock-left": "No Stock Left",
+          "low-stock": "Low Stock",
+          "in-stock": "In Stock"
+        },
+        "order-product-card": {
+          "out-of-stock": "Out of Stock",
+          "low-stock": "Low Stock",
+          "in-stock": "In Stock",
+          "add-to-order": "Add to Order"
+        },
+        "order-modal": {
+          "create-title": "Create New Order",
+          "edit-title": "Edit Order",
+          "create-description": "Add products to create a new order",
+          "edit-description": "Modify the order details below",
+          "products": "Products",
+          "order-items": "Order Items",
+          "items": "items",
+          "search-products": "Search products...",
+          "total-amount": "Total Amount",
+          "cancel": "Cancel",
+          "create-order": "Create Order",
+          "edit-order": "Update Order",
+          "saving": "Saving..."
+        }
+      },
+      "category": {
+        "category-toolbar": {
+          "add-category": "Add Category",
+          "search": "Filter..."
+        },
+        "category-list": {
+          "table": {
+            "header": {
+              "id": "ID",
+              "name": "Name",
+              "created": "Created",
+              "updated": "Updated",
+              "actions": "Actions"
+            }
+          },
+          "messages": {
+            "no-categories": "No categories found",
+            "try-adjusting-filters": "Try adjusting your filters or adding a new category."
+          }
+        },
+        "category-modal": {
+          "edit-title": "Edit Category",
+          "add-title": "Add Category",
+          "edit-description": "Edit the category name",
+          "add-description": "Add a new category",
+          "name-placeholder": "Category name",
+          "cancel": "Cancel",
+          "update": "Update",
+          "create": "Create"
+        }
+      },
+      "user": {
+        "user-toolbar": {
+          "add-user": "Add User",
+          "search": "Filter..."
+        },
+        "user-list": {
+          "table": {
+            "header": {
+              "id": "ID",
+              "name": "Name",
+              "email": "Email",
+              "role": "Role",
+              "created": "Created",
+              "actions": "Actions"
+            }
+          },
+          "messages": {
+            "no-users": "No users found",
+            "try-adjusting-filters": "Try adjusting your filters or adding a new user."
+          }
+        },
+        "user-modal": {
+          "add-title": "Add New User",
+          "edit-title": "Edit User",
+          "add-description": "Fill in the user's information below",
+          "edit-description": "Edit the user's information below",
+          "name-placeholder": "Enter full name",
+          "email-placeholder": "Enter email address",
+          "phone-placeholder": "Enter phone number",
+          "password-placeholder": "Enter password",
+          "cancel": "Cancel",
+          "create": "Create User",
+          "update": "Update User"
+        },
+        "user-role": {
+          "user": "User",
+          "admin": "Admin",
+          "placeholder": "Select a role"
+        }
+      },
+      "profile": {
+        "profile-modal": {
+          "title": "Edit Profile",
+          "description": "Update your profile information below",
+          "full-name": "Full Name",
+          "email": "Email",
+          "phone": "Phone",
+          "full-name-placeholder": "Enter your full name",
+          "email-placeholder": "Enter your email",
+          "phone-placeholder": "Enter your phone number",
+          "cancel": "Cancel",
+          "update-profile": "Update Profile",
+          "updating": "Updating..."
+        },
+        "profile-page": {
+          "title": "Profile Settings",
+          "edit-profile": "Edit Profile",
+          "personal-info": {
+            "title": "Personal Information",
+            "full-name": "Full Name",
+            "email": "Email",
+            "phone": "Phone",
+            "role": "Role",
+            "no-profile": "No profile details found",
+            "try-later": "Please try again later."
+          },
+          "change-password": {
+            "title": "Change Password",
+            "current-password": "Current Password",
+            "new-password": "New Password",
+            "confirm-password": "Confirm New Password",
+            "current-password-placeholder": "Enter current password",
+            "new-password-placeholder": "Enter new password",
+            "confirm-password-placeholder": "Confirm new password",
+            "updating": "Updating...",
+            "update-password": "Update Password"
+          }
+        }
+      }
+    }
+  },
+  "messages": {
+    "success": {
+      "order": {
+        "status-updated": "Order status updated successfully",
+        "order-deleted": "Order deleted successfully",
+        "order-created": "Order created successfully",
+        "order-updated": "Order updated successfully"
+      },
+      "category": {
+        "category-created": "Category created successfully",
+        "category-updated": "Category updated successfully",
+        "category-deleted": "Category deleted successfully"
+      },
+      "user": {
+        "user-created": "User created successfully",
+        "user-updated": "User updated successfully",
+        "user-deleted": "User deleted successfully"
+      },
+      "profile": {
+        "profile-updated": "Profile updated successfully",
+        "password-updated": "Password updated successfully"
+      }
+    },
+    "error": {
+      "order": {
+        "status-updated-failed": "Failed to update order status",
+        "order-deleted-failed": "Failed to delete order",
+        "order-save-failed": "Failed to save order"
+      },
+      "out-of-stock": "This product is currently out of stock",
+      "low-stock": "This product is running low on stock. Order soon!",
+      "in-stock": "Product is available in stock",
+      "category": {
+        "category-create-failed": "Failed to create category",
+        "category-update-failed": "Failed to update category",
+        "category-delete-failed": "Failed to delete category"
+      },
+      "user": {
+        "user-create-failed": "Failed to create user",
+        "user-update-failed": "Failed to update user",
+        "user-delete-failed": "Failed to delete user"
+      },
+      "profile": {
+        "profile-update-failed": "Failed to update profile",
+        "password-update-failed": "Failed to update password",
+        "current-password-required": "Current password is required",
+        "new-password-required": "New password is required",
+        "passwords-dont-match": "New passwords do not match",
+        "password-too-short": "New password must be at least 6 characters long"
+      }
+    }
+  }
+}

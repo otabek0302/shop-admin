@@ -12,11 +12,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Mail, Phone, Shield, Lock, KeyRound } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useTranslation } from "react-i18next";
 
 const SettingsPage = () => {
   const { setOpen } = useModalStore();
   const { data: session } = useSession();
   const { profile, fetchProfile, loading, error, updateProfile } = useProfileStore();
+  const { t } = useTranslation();
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -38,19 +40,19 @@ const SettingsPage = () => {
     e.preventDefault();
     
     if (!passwordData.currentPassword) {
-      toast.error("Current password is required");
+      toast.error(t("messages.error.profile.current-password-required"));
       return;
     }
     if (!passwordData.newPassword) {
-      toast.error("New password is required");
+      toast.error(t("messages.error.profile.new-password-required"));
       return;
     }
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast.error("New passwords do not match");
+      toast.error(t("messages.error.profile.passwords-dont-match"));
       return;
     }
     if (passwordData.newPassword.length < 6) {
-      toast.error("New password must be at least 6 characters long");
+      toast.error(t("messages.error.profile.password-too-short"));
       return;
     }
 
@@ -61,7 +63,7 @@ const SettingsPage = () => {
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
       });
-      toast.success("Password updated successfully");
+      toast.success(t("messages.success.profile.password-updated"));
       setPasswordData({
         currentPassword: "",
         newPassword: "",
@@ -69,7 +71,7 @@ const SettingsPage = () => {
       });
     } catch (err) {
       console.error("[UPDATE_PASSWORD_ERROR]", err);
-      toast.error("Failed to update password");
+      toast.error(t("messages.error.profile.password-update-failed"));
     } finally {
       setIsUpdatingPassword(false);
     }
@@ -90,55 +92,55 @@ const SettingsPage = () => {
     <section className="h-full flex-1 overflow-auto p-4">
       <div className="container mx-auto px-4 md:px-6">
         <div className="py-4 pl-2 flex justify-between items-center">
-          <h3 className="text-2xl font-bold tracking-tight">Profile Settings</h3>
+          <h3 className="text-2xl font-bold tracking-tight">{t("components.admin-ui.profile.profile-page.title")}</h3>
           <Button 
             variant="outline" 
             className="bg-primary text-white hover:bg-primary/90 hover:text-white cursor-pointer"
             onClick={() => setOpen(true)}
           >
-            Edit Profile
+            {t("components.admin-ui.profile.profile-page.edit-profile")}
           </Button>
         </div>
 
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle className="text-xl">Personal Information</CardTitle>
+            <CardTitle className="text-xl">{t("components.admin-ui.profile.profile-page.personal-info.title")}</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
               renderSkeleton()
             ) : !profile ? (
               <div className="flex flex-col items-center justify-center text-center text-muted-foreground px-10 py-20">
-                <span className="text-lg font-semibold">No profile details found</span>
-                <p className="text-sm mt-1">Please try again later.</p>
+                <span className="text-lg font-semibold">{t("components.admin-ui.profile.profile-page.personal-info.no-profile")}</span>
+                <p className="text-sm mt-1">{t("components.admin-ui.profile.profile-page.personal-info.try-later")}</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                     <User className="h-4 w-4" />
-                    Full Name
+                    {t("components.admin-ui.profile.profile-page.personal-info.full-name")}
                   </div>
                   <p className="text-sm border rounded-md p-2">{profile.name}</p>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                     <Mail className="h-4 w-4" />
-                    Email
+                    {t("components.admin-ui.profile.profile-page.personal-info.email")}
                   </div>
                   <p className="text-sm border rounded-md p-2">{profile.email}</p>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                     <Phone className="h-4 w-4" />
-                    Phone
+                    {t("components.admin-ui.profile.profile-page.personal-info.phone")}
                   </div>
                   <p className="text-sm border rounded-md p-2">{profile.phone}</p>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                     <Shield className="h-4 w-4" />
-                    Role
+                    {t("components.admin-ui.profile.profile-page.personal-info.role")}
                   </div>
                   <p className="text-sm border rounded-md p-2 capitalize">{profile.role}</p>
                 </div>
@@ -151,13 +153,13 @@ const SettingsPage = () => {
           <CardHeader>
             <CardTitle className="text-xl flex items-center gap-2">
               <Lock className="h-5 w-5" />
-              Change Password
+              {t("components.admin-ui.profile.profile-page.change-password.title")}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handlePasswordChange} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="currentPassword">Current Password</Label>
+                <Label htmlFor="currentPassword">{t("components.admin-ui.profile.profile-page.change-password.current-password")}</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -165,7 +167,7 @@ const SettingsPage = () => {
                     type="password"
                     value={passwordData.currentPassword}
                     onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                    placeholder="Enter current password"
+                    placeholder={t("components.admin-ui.profile.profile-page.change-password.current-password-placeholder")}
                     required
                     className="w-full pl-9 focus-visible:ring-1 shadow-none"
                     disabled={isUpdatingPassword}
@@ -173,7 +175,7 @@ const SettingsPage = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="newPassword">New Password</Label>
+                <Label htmlFor="newPassword">{t("components.admin-ui.profile.profile-page.change-password.new-password")}</Label>
                 <div className="relative">
                   <KeyRound className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -181,7 +183,7 @@ const SettingsPage = () => {
                     type="password"
                     value={passwordData.newPassword}
                     onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                    placeholder="Enter new password"
+                    placeholder={t("components.admin-ui.profile.profile-page.change-password.new-password-placeholder")}
                     required
                     className="w-full pl-9 focus-visible:ring-1 shadow-none"
                     disabled={isUpdatingPassword}
@@ -189,7 +191,7 @@ const SettingsPage = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                <Label htmlFor="confirmPassword">{t("components.admin-ui.profile.profile-page.change-password.confirm-password")}</Label>
                 <div className="relative">
                   <KeyRound className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -197,7 +199,7 @@ const SettingsPage = () => {
                     type="password"
                     value={passwordData.confirmPassword}
                     onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                    placeholder="Confirm new password"
+                    placeholder={t("components.admin-ui.profile.profile-page.change-password.confirm-password-placeholder")}
                     required
                     className="w-full pl-9 focus-visible:ring-1 shadow-none"
                     disabled={isUpdatingPassword}
@@ -210,7 +212,7 @@ const SettingsPage = () => {
                   className="bg-primary text-white hover:bg-primary/90"
                   disabled={isUpdatingPassword}
                 >
-                  {isUpdatingPassword ? "Updating..." : "Update Password"}
+                  {isUpdatingPassword ? t("components.admin-ui.profile.profile-page.change-password.updating") : t("components.admin-ui.profile.profile-page.change-password.update-password")}
                 </Button>
               </div>
             </form>

@@ -1,29 +1,32 @@
-"use client";
+'use client';
 
-import ProductCategory from "./product-category";
-import ProductImage from "./product-image";
-import { ProductFormData } from "@/interfaces/products";
+import ProductCategory from './product-category';
+import ProductImage from './product-image';
+import { ProductFormData } from '@/interfaces/products';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import { useProductStore } from "@/store/product-store";
-import { useModalStore } from "@/store/modal-store";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
+import { useProductStore } from '@/store/product-store';
+import { useModalStore } from '@/store/modal-store';
+import { useTranslation } from 'react-i18next';
 
 const ProductModal = () => {
+  const { t } = useTranslation();
+
   const { open, setOpen } = useModalStore();
   const { editData, setEditData, editProduct, createProduct } = useProductStore();
-  
+
   const [product, setProduct] = useState<ProductFormData>({
-    name: "",
-    description: "",
-    brand: "",
+    name: '',
+    description: '',
+    brand: '',
     price: 0,
     stock: 0,
-    category: "",
+    category: '',
     imageBase64: null,
   });
 
@@ -42,12 +45,12 @@ const ProductModal = () => {
       });
     } else {
       setProduct({
-        name: "",
-        description: "",
-        brand: "",
+        name: '',
+        description: '',
+        brand: '',
         price: 0,
         stock: 0,
-        category: "",
+        category: '',
         imageBase64: null,
       });
       setImage(null);
@@ -58,7 +61,7 @@ const ProductModal = () => {
     const { id, value } = e.target;
     setProduct((prev: ProductFormData) => ({
       ...prev,
-      [id]: id === "price" || id === "stock" ? Number(value) : value,
+      [id]: id === 'price' || id === 'stock' ? Number(value) : value,
     }));
   };
 
@@ -93,55 +96,62 @@ const ProductModal = () => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => {
-      if (!isOpen) {
-        setEditData(null);
-        setImage(null);
-      }
-      setOpen(isOpen);
-    }}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) {
+          setEditData(null);
+          setImage(null);
+        }
+        setOpen(isOpen);
+      }}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{editData ? "Edit Product" : "Add Product"}</DialogTitle>
+          <DialogTitle>{editData ? t('components.admin-ui.product.product-modal.edit-title') : t('components.admin-ui.product.product-modal.add-title')}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <ProductImage image={image} setImage={setImage} existingImage={editData?.image} />
-          
+
           <div className="grid gap-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">{t('components.admin-ui.product.product-modal.label.name')}</Label>
             <Input id="name" value={product.name} onChange={handleChange} required />
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('components.admin-ui.product.product-modal.label.description')}</Label>
             <Textarea id="description" value={product.description} onChange={handleChange} required />
           </div>
-          
+
           <ProductCategory category={product.category} setCategory={(id) => setProduct((prev) => ({ ...prev, category: id }))} />
 
           <div className="grid gap-2">
-            <Label htmlFor="brand">Brand</Label>
+            <Label htmlFor="brand">{t('components.admin-ui.product.product-modal.label.brand')}</Label>
             <Input id="brand" value={product.brand} onChange={handleChange} required />
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="price">Price</Label>
+            <Label htmlFor="price">{t('components.admin-ui.product.product-modal.label.price')}</Label>
             <Input id="price" type="number" value={product.price} onChange={handleChange} required min={0} />
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="stock">Stock</Label>
+            <Label htmlFor="stock">{t('components.admin-ui.product.product-modal.label.stock')}</Label>
             <Input id="stock" type="number" value={product.stock} onChange={handleChange} required min={0} />
           </div>
 
           <div className="flex justify-end gap-2 pt-4">
-            <Button type="button" variant="outline" onClick={() => {
-              setOpen(false);
-              setEditData(null);
-              setImage(null);
-            }}>Cancel</Button>
-            <Button type="submit">{editData ? "Update" : "Create"}</Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setOpen(false);
+                setEditData(null);
+                setImage(null);
+              }}>
+              {t('components.admin-ui.product.product-modal.cancel')}
+            </Button>
+            <Button type="submit">{editData ? t('components.admin-ui.product.product-modal.update') : t('components.admin-ui.product.product-modal.create')}</Button>
           </div>
         </form>
       </DialogContent>

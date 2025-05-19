@@ -1,17 +1,19 @@
 'use client';
 
 import Image from 'next/image';
-import { AlertTriangle } from 'lucide-react';
-
-import { Product } from '@/interfaces/products';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useClientOrderStore } from '@/store/client-order-store';
-import { getStockStatus } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import Counter from '@/components/ui/counter';
 
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useClientOrderStore } from '@/store/client-order-store';
+import { AlertTriangle } from 'lucide-react';
+import { getStockStatus } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
+import { Product } from '@/interfaces/products';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+
 export function ProductCard({ product }: { product: Product }) {
+  const { t } = useTranslation();
   const { getQuantityForProduct, addToBusket } = useClientOrderStore();
 
   const quantityInCart = getQuantityForProduct(product.id);
@@ -43,10 +45,10 @@ export function ProductCard({ product }: { product: Product }) {
           <Tooltip>
             <TooltipTrigger>
               <Badge variant={stockStatus.variant} className="mt-1 cursor-pointer p-2 py-1.5 text-xs outline-none">
-                {stockStatus.message}
+                {stockStatus.message === 'Out of Stock' ? t('messages.error.out-of-stock') : stockStatus.message.startsWith('Low Stock') ? t('messages.error.low-stock') : t('messages.error.in-stock')}
               </Badge>
             </TooltipTrigger>
-            <TooltipContent>{stockStatus.message === 'Out of Stock' ? 'This product is currently out of stock' : stockStatus.message.startsWith('Low Stock') ? 'This product is running low on stock. Order soon!' : 'Product is available in stock'}</TooltipContent>
+            <TooltipContent>{stockStatus.message === 'Out of Stock' ? t('messages.error.out-of-stock') : stockStatus.message.startsWith('Low Stock') ? t('messages.error.low-stock') : t('messages.error.in-stock')}</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
@@ -57,16 +59,11 @@ export function ProductCard({ product }: { product: Product }) {
 
         {quantityInCart > 0 ? (
           <div className="mt-2">
-            <Counter 
-              productId={product.id}
-              value={quantityInCart}
-              max={product.stock}
-              size="sm"
-            />
+            <Counter productId={product.id} value={quantityInCart} max={product.stock} size="sm" />
           </div>
         ) : (
           <Button variant="outline" size="sm" className="mt-2" onClick={() => onAddToCart(product)} disabled={isOutOfStock}>
-            Add
+            {t('components.product-card.add-to-cart')}
           </Button>
         )}
       </div>

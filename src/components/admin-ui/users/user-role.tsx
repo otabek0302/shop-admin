@@ -1,24 +1,25 @@
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+"use client";
+
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTranslation } from "react-i18next";
 
 interface UserRoleProps {
   role: string;
   onChange: (value: string) => void;
 }
 
-const UserRole = ({ role, onChange }: UserRoleProps) => {
+export default function UserRole({ role, onChange }: UserRoleProps) {
+  const { t } = useTranslation();
+
   return (
-    <Select value={role} onValueChange={(value) => onChange(value)}>
+    <Select value={role} onValueChange={onChange}>
       <SelectTrigger className="w-full">
-        <SelectValue placeholder="Select a role" />
+        <SelectValue placeholder={t("components.admin-ui.user.user-role.placeholder")} className="text-sm text-muted-foreground cursor-pointer" />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
-          <SelectItem value="USER">User</SelectItem>
-          <SelectItem value="ADMIN">Admin</SelectItem>
-        </SelectGroup>
+        <SelectItem value="user" className="cursor-pointer text-sm">{t("components.admin-ui.user.user-role.user")}</SelectItem>
+        <SelectItem value="admin" className="cursor-pointer text-sm">{t("components.admin-ui.user.user-role.admin")}</SelectItem>
       </SelectContent>
     </Select>
   );
-};
-
-export default UserRole;
+}

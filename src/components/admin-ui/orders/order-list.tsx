@@ -1,89 +1,91 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import ConfirmDialog from "@/components/ui/confirm-dialog";
-import OrderModal from "./order-modal";
-import OrderListActions from "./order-list-actions";
+import Image from 'next/image';
+import ConfirmDialog from '@/components/ui/confirm-dialog';
+import OrderModal from './order-modal';
+import OrderListActions from './order-list-actions';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { OrderItem, OrderStatus } from "@/interfaces/orders";
-import { getImageUrl } from "@/utils/getImageUrl";
-import { Badge } from "@/components/ui/badge";
-import { useOrderStore } from "@/store/order-store";
-import { toast } from "sonner";
-import { Skeleton } from "@/components/ui/skeleton";
-import { formatDistanceToNow, format } from "date-fns";
-import { useConfirmStore } from "@/store/confirm-store";
-import { IndianRupee, ChevronDownIcon, Clock, Calendar } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { OrderItem, OrderStatus } from '@/interfaces/orders';
+import { getImageUrl } from '@/utils/getImageUrl';
+import { Badge } from '@/components/ui/badge';
+import { useOrderStore } from '@/store/order-store';
+import { toast } from 'sonner';
+import { Skeleton } from '@/components/ui/skeleton';
+import { formatDistanceToNow, format } from 'date-fns';
+import { useConfirmStore } from '@/store/confirm-store';
+import { IndianRupee, ChevronDownIcon, Clock, Calendar } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 const OrderList = () => {
+  const { t } = useTranslation();
   const { orders, loading, error, deleteOrder, deleteData, updateOrder } = useOrderStore();
   const { closeConfirm } = useConfirmStore();
 
   const getStatusColor = (status: OrderStatus) => {
     switch (status) {
       case OrderStatus.PENDING:
-        return "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400";
+        return 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400';
       case OrderStatus.PROCESSING:
-        return "bg-blue-500/10 text-blue-600 dark:text-blue-400";
+        return 'bg-blue-500/10 text-blue-600 dark:text-blue-400';
       case OrderStatus.COMPLETED:
-        return "bg-green-500/10 text-green-600 dark:text-green-400";
+        return 'bg-green-500/10 text-green-600 dark:text-green-400';
       case OrderStatus.CANCELLED:
-        return "bg-red-500/10 text-red-600 dark:text-red-400";
+        return 'bg-red-500/10 text-red-600 dark:text-red-400';
       default:
-        return "bg-gray-500/10 text-gray-600 dark:text-gray-400";
+        return 'bg-gray-500/10 text-gray-600 dark:text-gray-400';
     }
   };
 
   const getStatusIcon = (status: OrderStatus) => {
     switch (status) {
       case OrderStatus.PENDING:
-        return "⏳";
+        return '⏳';
       case OrderStatus.PROCESSING:
-        return "🔄";
+        return '🔄';
       case OrderStatus.COMPLETED:
-        return "✅";
+        return '✅';
       case OrderStatus.CANCELLED:
-        return "❌";
+        return '❌';
       default:
-        return "•";
+        return '•';
     }
   };
 
   const getStatusDescription = (status: OrderStatus) => {
     switch (status) {
       case OrderStatus.PENDING:
-        return "Order is waiting to be processed";
+        return t('components.admin-ui.order.order-list.status.pending');
       case OrderStatus.PROCESSING:
-        return "Order is being processed";
+        return t('components.admin-ui.order.order-list.status.processing');
       case OrderStatus.COMPLETED:
-        return "Order has been completed";
+        return t('components.admin-ui.order.order-list.status.completed');
       case OrderStatus.CANCELLED:
-        return "Order has been cancelled";
+        return t('components.admin-ui.order.order-list.status.cancelled');
       default:
-        return "Unknown status";
+        return 'Unknown status';
     }
   };
 
   const handleStatusChange = async (orderId: string, newStatus: OrderStatus) => {
     try {
       await updateOrder(orderId, { status: newStatus });
-      toast.success("Order status updated successfully");
+      toast.success(t('components.admin-ui.order.status-updated'));
     } catch (error) {
       console.error(error);
-      toast.error("Failed to update order status");
+      toast.error(t('components.admin-ui.order.status-updated-failed'));
     }
   };
 
   const confirmDelete = async () => {
     try {
-      await deleteOrder(deleteData?.id ?? "");
-      toast.success("Order deleted successfully");
+      await deleteOrder(deleteData?.id ?? '');
+      toast.success(t('components.admin-ui.order.order-deleted'));
     } catch {
-      toast.error("Failed to delete order");
+      toast.error(t('components.admin-ui.order.order-deleted-failed'));
     }
     closeConfirm();
   };
@@ -126,12 +128,12 @@ const OrderList = () => {
       <Table className="h-full border-collapse overflow-hidden rounded-lg border-gray-200 dark:border-gray-700">
         <TableHeader className="bg-background sticky top-0">
           <TableRow className="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
-            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">ID</TableHead>
-            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">Total</TableHead>
-            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">Status</TableHead>
-            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">Items</TableHead>
-            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">Created</TableHead>
-            <TableHead className="flex items-center justify-center px-6 text-sm font-bold text-gray-700 dark:text-gray-300">Actions</TableHead>
+            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">{t('components.admin-ui.order.order-list.table.header.id')}</TableHead>
+            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">{t('components.admin-ui.order.order-list.table.header.total')}</TableHead>
+            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">{t('components.admin-ui.order.order-list.table.header.status')}</TableHead>
+            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">{t('components.admin-ui.order.order-list.table.header.items')}</TableHead>
+            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">{t('components.admin-ui.order.order-list.table.header.created')}</TableHead>
+            <TableHead className="flex items-center justify-center px-6 text-sm font-bold text-gray-700 dark:text-gray-300">{t('components.admin-ui.order.order-list.table.header.actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="h-full">
@@ -141,8 +143,8 @@ const OrderList = () => {
             <TableRow>
               <TableCell colSpan={6} className="h-24 text-center">
                 <div className="text-muted-foreground flex flex-col items-center justify-center text-center">
-                  <span className="text-lg font-semibold">No orders found</span>
-                  <p className="mt-1 text-sm">Try adjusting your filters or adding a new order.</p>
+                  <span className="text-lg font-semibold">{t('components.admin-ui.order.order-list.messages.no-orders')}</span>
+                  <p className="mt-1 text-sm">{t('components.admin-ui.order.order-list.messages.try-adjusting-filters')}</p>
                 </div>
               </TableCell>
             </TableRow>
@@ -171,19 +173,13 @@ const OrderList = () => {
                 </TableCell>
                 <TableCell className="px-6">
                   <Select defaultValue={order.status} onValueChange={(value) => handleStatusChange(order.id, value as OrderStatus)}>
-                    <SelectTrigger className={cn(
-                      "w-[140px] p-0 pr-2 border-none outline-none transition-colors",
-                      getStatusColor(order.status)
-                    )}>
+                    <SelectTrigger className={cn('w-[140px] border-none p-0 pr-2 transition-colors outline-none', getStatusColor(order.status))}>
                       <SelectValue className="w-full border-none outline-none">
-                        <Badge className={cn(
-                          "w-full border-none outline-none flex items-center gap-1.5 transition-colors",
-                          getStatusColor(order.status)
-                        )}>
+                        <Badge className={cn('flex w-full items-center gap-1.5 border-none transition-colors outline-none', getStatusColor(order.status))}>
                           <span>{getStatusIcon(order.status)}</span>
                           {order.status}
                         </Badge>
-                        <ChevronDownIcon className="size-4 text-muted-foreground" />
+                        <ChevronDownIcon className="text-muted-foreground size-4" />
                       </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
@@ -192,10 +188,7 @@ const OrderList = () => {
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger>
-                                <Badge className={cn(
-                                  "flex items-center gap-1.5 transition-colors",
-                                  getStatusColor(status)
-                                )}>
+                                <Badge className={cn('flex items-center gap-1.5 transition-colors', getStatusColor(status))}>
                                   <span>{getStatusIcon(status)}</span>
                                   {status}
                                 </Badge>
@@ -216,11 +209,11 @@ const OrderList = () => {
                       <TooltipProvider key={item.id}>
                         <Tooltip>
                           <TooltipTrigger>
-                            <div className="relative p-2 group">
+                            <div className="group relative p-2">
                               <div className="relative h-10 w-10 overflow-hidden rounded-md">
                                 <Image src={getImageUrl(item.product.image)} alt={item.product.name} fill className="object-cover" />
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                  <span className="text-white text-xs font-medium">{item.quantity}×</span>
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+                                  <span className="text-xs font-medium text-white">{item.quantity}×</span>
                                 </div>
                               </div>
                             </div>
@@ -228,7 +221,7 @@ const OrderList = () => {
                           <TooltipContent>
                             <div className="flex flex-col gap-1">
                               <p className="font-medium">{item.product.name}</p>
-                              <p className="text-sm text-muted-foreground">
+                              <p className="text-muted-foreground text-sm">
                                 {item.quantity} × ₹{item.price.toFixed(2)} = ₹{item.total.toFixed(2)}
                               </p>
                             </div>
@@ -253,9 +246,7 @@ const OrderList = () => {
                             <Calendar className="h-4 w-4" />
                             {order.createdAt ? format(new Date(order.createdAt), 'PPpp') : 'N/A'}
                           </p>
-                          <p className="text-sm text-muted-foreground">
-                            Order ID: {order.id}
-                          </p>
+                          <p className="text-muted-foreground text-sm">Order ID: {order.id}</p>
                         </div>
                       </TooltipContent>
                     </Tooltip>

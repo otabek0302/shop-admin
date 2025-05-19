@@ -1,0 +1,363 @@
+{
+  "app-page": {},
+  "login-page": {},
+  "orders-page": {},
+  "not-found-page": {},
+  "admin-page": {
+    "categories-page": {},
+    "products-page": {},
+    "users-page": {},
+    "orders-page": {},
+    "profile-page": {}
+  },
+  "components": {
+    "layout": {
+      "header": {
+        "title": "Магазин",
+        "description": "Магазин - это платформа для покупки и продажи товаров и услуг."
+      }
+    },
+    "footer": {
+      "links": {
+        "terms-and-conditions": "Условия использования",
+        "privacy-policy": "Политика конфиденциальности",
+        "cookies": "Куки"
+      }
+    },
+    "header-actions": {},
+    "login-form": {
+      "title": "Добро пожаловать",
+      "description": "Войдите в свой аккаунт",
+      "email": "Электронная почта",
+      "password": "Пароль",
+      "forgot-password": "Забыли пароль?"
+    },
+    "sidebar": {
+      "home": "Главная",
+      "products": "Товары",
+      "orders": "Заказы",
+      "categories": "Категории",
+      "users": "Пользователи",
+      "profile": "Профиль"
+    },
+    "product-card": {
+      "add-to-cart": "Добавить в корзину",
+      "out-of-stock": "Нет в наличии",
+      "low-stock": "Заканчивается",
+      "in-stock": "В наличии"
+    },
+    "product-list": {
+      "no-products": "Нет доступных товаров."
+    },
+    "summary": {
+      "title": "Проверить заказ",
+      "empty-cart": "Ваша корзина пуста",
+      "discount-amount": "Сумма скидки",
+      "apply-discount": "Применить скидку",
+      "discount-applied": "Скидка применена: -{discount}",
+      "subtotal": "Промежуточный итог",
+      "total": "Итого",
+      "create-order": "Создать заказ"
+    },
+    "dashboard": {
+      "title": "Панель управления",
+      "previous-month": "Предыдущий месяц",
+      "next-month": "Следующий месяц",
+      "card": {
+        "orders": "Заказы",
+        "revenue": "Доход",
+        "products": "Товары",
+        "stock-status": "Состояние запасов"
+      },
+      "content": {
+        "completed-orders": "Выполненные заказы",
+        "cancelled-orders": "Отмененные заказы",
+        "pending-orders": "Ожидающие заказы",
+        "processing-orders": "Заказы в обработке",
+        "total-products": "Всего товаров",
+        "products-in-store": "Товары в магазине",
+        "sold-products": "Проданные товары",
+        "store-value": "Стоимость магазина",
+        "revenue-in-stock": "Доход в наличии",
+        "out-of-stock": "Нет в наличии",
+        "out-of-stock-items": "Товары не в наличии",
+        "no-out-of-stock": "Нет товаров, отсутствующих в наличии",
+        "no-category": "Нет категории"
+      },
+      "errors": {
+        "fetch": "Не удалось загрузить данные панели управления"
+      }
+    },
+    "admin-ui": {
+      "product": {
+        "product-toolbar": {
+          "add-product": "Добавить товар",
+          "search": "Поиск"
+        },
+        "product-modal": {
+          "add-title": "Добавить новый продукт",
+          "edit-title": "Редактировать продукт",
+          "add-description": "Заполните информацию о продукте ниже",
+          "edit-description": "Отредактируйте информацию о продукте ниже",
+          "label": {
+            "name": "Название продукта",
+            "description": "Описание",
+            "brand": "Бренд",
+            "price": "Цена",
+            "stock": "Количество"
+          },
+          "image": {
+            "label": "Изображение продукта",
+            "browse-files": "Выбрать файлы",
+            "image-placeholder": "Загрузить изображение",
+            "image-max-size": "Максимальный размер файла: 10MB",
+            "image-selected": "Изображение выбрано",
+            "image-removed": "Изображение удалено",
+            "image-error": "Ошибка загрузки изображения"
+          },
+          "category": {
+            "label": "Категория",
+            "placeholder": "Выберите категорию"
+          },
+          "cancel": "Отмена",
+          "create": "Создать продукт",
+          "update": "Обновить продукт"
+        },
+        "product-card": {
+          "summary": {
+            "title": "Сводка",
+            "brand": "Бренд",
+            "description": "Описание"
+          },
+          "sales": "Продажи",
+          "remaining-products": "Оставшиеся товары"
+        },
+        "product-list": {
+          "no-products": "Товары не найдены",
+          "try-adjusting-filters": "Попробуйте изменить фильтры или добавить новый товар."
+        }
+      },
+      "order": {
+        "order-toolbar": {
+          "add-order": "Добавить заказ",
+          "search": "Поиск"
+        },
+        "order-list": {
+          "status": {
+            "pending": "В ожидании",
+            "processing": "В обработке",
+            "completed": "Завершен",
+            "cancelled": "Отменен"
+          },
+          "table": {
+            "header": {
+              "id": "ID",
+              "total": "Итого",
+              "status": "Статус",
+              "items": "Товары",
+              "created": "Создан",
+              "actions": "Действия"
+            }
+          },
+          "messages": {
+            "no-orders": "Заказы не найдены",
+            "try-adjusting-filters": "Попробуйте изменить фильтры или добавить новый заказ."
+          }
+        },
+        "order-item": {
+          "status": "Статус",
+          "no-stock-left": "Нет в наличии",
+          "low-stock": "Заканчивается",
+          "in-stock": "В наличии"
+        },
+        "order-product-card": {
+          "out-of-stock": "Нет в наличии",
+          "low-stock": "Заканчивается",
+          "in-stock": "В наличии",
+          "add-to-order": "Добавить в заказ"
+        },
+        "order-modal": {
+          "create-title": "Создать новый заказ",
+          "edit-title": "Редактировать заказ",
+          "create-description": "Добавьте продукты для создания нового заказа",
+          "edit-description": "Измените детали заказа ниже",
+          "products": "Продукты",
+          "order-items": "Товары заказа",
+          "items": "товаров",
+          "search-products": "Поиск продуктов...",
+          "total-amount": "Общая сумма",
+          "cancel": "Отмена",
+          "create-order": "Создать заказ",
+          "edit-order": "Обновить заказ",
+          "saving": "Сохранение..."
+        },
+        "status-updated": "Статус заказа успешно обновлен",
+        "status-updated-failed": "Не удалось обновить статус заказа",
+        "order-deleted": "Заказ успешно удален",
+        "order-deleted-failed": "Не удалось удалить заказ"
+      },
+      "category": {
+        "category-toolbar": {
+          "add-category": "Добавить категорию",
+          "search": "Фильтр..."
+        },
+        "category-list": {
+          "table": {
+            "header": {
+              "id": "ID",
+              "name": "Название",
+              "created": "Создано",
+              "updated": "Обновлено",
+              "actions": "Действия"
+            }
+          },
+          "messages": {
+            "no-categories": "Категории не найдены",
+            "try-adjusting-filters": "Попробуйте изменить фильтры или добавить новую категорию."
+          }
+        },
+        "category-modal": {
+          "edit-title": "Редактировать категорию",
+          "add-title": "Добавить категорию",
+          "edit-description": "Изменить название категории",
+          "add-description": "Добавить новую категорию",
+          "name-placeholder": "Название категории",
+          "cancel": "Отмена",
+          "update": "Обновить",
+          "create": "Создать"
+        }
+      },
+      "user": {
+        "user-toolbar": {
+          "add-user": "Добавить пользователя",
+          "search": "Фильтр..."
+        },
+        "user-list": {
+          "table": {
+            "header": {
+              "id": "ID",
+              "name": "Имя",
+              "email": "Email",
+              "role": "Роль",
+              "created": "Создан",
+              "actions": "Действия"
+            }
+          },
+          "messages": {
+            "no-users": "Пользователи не найдены",
+            "try-adjusting-filters": "Попробуйте изменить фильтры или добавить нового пользователя."
+          }
+        },
+        "user-modal": {
+          "add-title": "Добавить нового пользователя",
+          "edit-title": "Редактировать пользователя",
+          "add-description": "Заполните информацию о пользователе ниже",
+          "edit-description": "Отредактируйте информацию о пользователе ниже",
+          "name-placeholder": "Введите полное имя",
+          "email-placeholder": "Введите email адрес",
+          "phone-placeholder": "Введите номер телефона",
+          "password-placeholder": "Введите пароль",
+          "cancel": "Отмена",
+          "create": "Создать пользователя",
+          "update": "Обновить пользователя"
+        },
+        "user-role": {
+          "user": "Пользователь",
+          "admin": "Администратор",
+          "placeholder": "Выберите роль"
+        }
+      },
+      "profile": {
+        "profile-modal": {
+          "title": "Редактировать профиль",
+          "description": "Обновите информацию о вашем профиле ниже",
+          "full-name": "Полное имя",
+          "email": "Email",
+          "phone": "Телефон",
+          "full-name-placeholder": "Введите ваше полное имя",
+          "email-placeholder": "Введите ваш email",
+          "phone-placeholder": "Введите ваш номер телефона",
+          "cancel": "Отмена",
+          "update-profile": "Обновить профиль",
+          "updating": "Обновление..."
+        },
+        "profile-page": {
+          "title": "Настройки профиля",
+          "edit-profile": "Редактировать профиль",
+          "personal-info": {
+            "title": "Личная информация",
+            "full-name": "Полное имя",
+            "email": "Email",
+            "phone": "Телефон",
+            "role": "Роль",
+            "no-profile": "Информация о профиле не найдена",
+            "try-later": "Пожалуйста, попробуйте позже."
+          },
+          "change-password": {
+            "title": "Изменить пароль",
+            "current-password": "Текущий пароль",
+            "new-password": "Новый пароль",
+            "confirm-password": "Подтвердите новый пароль",
+            "current-password-placeholder": "Введите текущий пароль",
+            "new-password-placeholder": "Введите новый пароль",
+            "confirm-password-placeholder": "Подтвердите новый пароль",
+            "updating": "Обновление...",
+            "update-password": "Обновить пароль"
+          }
+        }
+      }
+    }
+  },
+  "messages": {
+    "success": {
+      "order": {
+        "status-updated": "Статус заказа успешно обновлен",
+        "order-deleted": "Заказ успешно удален",
+        "order-created": "Заказ успешно создан",
+        "order-updated": "Заказ успешно обновлен"
+      },
+      "category": {
+        "category-created": "Категория успешно создана",
+        "category-updated": "Категория успешно обновлена",
+        "category-deleted": "Категория успешно удалена"
+      },
+      "user": {
+        "user-created": "Пользователь успешно создан",
+        "user-updated": "Пользователь успешно обновлен",
+        "user-deleted": "Пользователь успешно удален"
+      },
+      "profile": {
+        "profile-updated": "Профиль успешно обновлен",
+        "password-updated": "Пароль успешно обновлен"
+      }
+    },
+    "error": {
+      "order": {
+        "status-updated-failed": "Не удалось обновить статус заказа",
+        "order-deleted-failed": "Не удалось удалить заказ",
+        "order-save-failed": "Не удалось сохранить заказ"
+      },
+      "out-of-stock": "Этот товар в настоящее время не в наличии",
+      "low-stock": "Этот товар скоро закончится. Заказывайте быстрее!",
+      "in-stock": "Товар в наличии",
+      "category": {
+        "category-create-failed": "Не удалось создать категорию",
+        "category-update-failed": "Не удалось обновить категорию",
+        "category-delete-failed": "Не удалось удалить категорию"
+      },
+      "user": {
+        "user-create-failed": "Не удалось создать пользователя",
+        "user-update-failed": "Не удалось обновить пользователя",
+        "user-delete-failed": "Не удалось удалить пользователя"
+      },
+      "profile": {
+        "profile-update-failed": "Не удалось обновить профиль",
+        "password-update-failed": "Не удалось обновить пароль",
+        "current-password-required": "Текущий пароль обязателен",
+        "new-password-required": "Новый пароль обязателен",
+        "passwords-dont-match": "Новые пароли не совпадают",
+        "password-too-short": "Новый пароль должен содержать не менее 6 символов"
+      }
+    }
+  }
+}

@@ -1,18 +1,23 @@
+"use client"
+
 import { Github, Instagram, Mail } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
+  const { t } = useTranslation();
+  
   return (
     <footer className="px-4">
       <div className="py-6 w-full flex items-center justify-between border-t border-border">
         <div className="flex flex-wrap justify-center gap-4">
           <a href="#" className="text-gray-400 text-sm transition hover:opacity-75">
-            Terms & Conditions
+            {t("components.footer.links.terms-and-conditions")}
           </a>
           <a href="#" className="text-gray-400 text-sm transition hover:opacity-75">
-            Privacy Policy
+            {t("components.footer.links.privacy-policy")}
           </a>
           <a href="#" className="text-gray-400 text-sm transition hover:opacity-75">
-            Cookies
+            {t("components.footer.links.cookies")}
           </a>
         </div>
 

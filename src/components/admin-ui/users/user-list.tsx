@@ -9,10 +9,12 @@ import { formatDistanceToNow } from "date-fns";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useUserStore } from "@/store/user-store";
 import { useConfirmStore } from "@/store/confirm-store";
+import { useTranslation } from "react-i18next";
 
 export default function UserList() {
   const { closeConfirm } = useConfirmStore();
   const { users, deleteData, deleteUser, loading } = useUserStore();
+  const { t } = useTranslation();
 
   const confirmDelete = async () => {
     await deleteUser(deleteData?.id ?? "");
@@ -35,12 +37,12 @@ export default function UserList() {
       <Table className="h-full border-collapse border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
         <TableHeader className="sticky top-0 bg-background">
           <TableRow className="bg-gray-50 dark:bg-gray-800 dark:border-gray-700 border-b border-gray-200">
-            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">ID</TableHead>
-            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">Name</TableHead>
-            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">Email</TableHead>
-            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">Role</TableHead>
-            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300 hidden md:table-cell">Created</TableHead>
-            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300 text-center">Actions</TableHead>
+            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">{t("components.admin-ui.user.user-list.table.header.id")}</TableHead>
+            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">{t("components.admin-ui.user.user-list.table.header.name")}</TableHead>
+            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">{t("components.admin-ui.user.user-list.table.header.email")}</TableHead>
+            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300">{t("components.admin-ui.user.user-list.table.header.role")}</TableHead>
+            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300 hidden md:table-cell">{t("components.admin-ui.user.user-list.table.header.created")}</TableHead>
+            <TableHead className="px-6 text-sm font-bold text-gray-700 dark:text-gray-300 text-center">{t("components.admin-ui.user.user-list.table.header.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="h-full">
@@ -49,8 +51,8 @@ export default function UserList() {
             <TableRow>
               <TableCell colSpan={6} className="h-24 text-center">
                 <div className="flex flex-col items-center justify-center text-center text-muted-foreground">
-                  <span className="text-lg font-semibold">No users found</span>
-                  <p className="text-sm mt-1">Try adjusting your filters or adding a new user.</p>
+                  <span className="text-lg font-semibold">{t("components.admin-ui.user.user-list.messages.no-users")}</span>
+                  <p className="text-sm mt-1">{t("components.admin-ui.user.user-list.messages.try-adjusting-filters")}</p>
                 </div>
               </TableCell>
             </TableRow>

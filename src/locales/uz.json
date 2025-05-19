@@ -1,0 +1,359 @@
+{
+  "app-page": {},
+  "login-page": {},
+  "orders-page": {},
+  "not-found-page": {},
+  "admin-page": {
+    "categories-page": {},
+    "products-page": {},
+    "users-page": {},
+    "orders-page": {},
+    "profile-page": {}
+  },
+  "components": {
+    "layout": {
+      "header": {
+        "title": "Do'kon",
+        "description": "Do'kon - bu mahsulotlar va xizmatlarni sotib olish va sotish uchun platforma."
+      }
+    },
+    "footer": {
+      "links": {
+        "terms-and-conditions": "Shartlar va shartlar",
+        "privacy-policy": "Maxfiylik siyosati",
+        "cookies": "Kukilarni qo'llash"
+      }
+    },
+    "header-actions": {},
+    "login-form": {
+      "title": "Xush kelibsiz",
+      "description": "Hisobingizga kiring",
+      "email": "Elektron pochta",
+      "password": "Parol",
+      "forgot-password": "Parolni unutdingizmi?"
+    },
+    "sidebar": {
+      "home": "Bosh sahifa",
+      "products": "Mahsulotlar",
+      "orders": "Buyurtmalar",
+      "categories": "Kategoriyalar",
+      "users": "Foydalanuvchilar",
+      "profile": "Profil"
+    },
+    "product-card": {
+      "add-to-cart": "Savatga qo'shish",
+      "out-of-stock": "Sotuvda yo'q",
+      "low-stock": "Tugab qolmoqda",
+      "in-stock": "Sotuvda mavjud"
+    },
+    "product-list": {
+      "no-products": "Mavjud mahsulotlar yo'q."
+    },
+    "summary": {
+      "title": "Buyurtmani ko'rib chiqish",
+      "empty-cart": "Sizning savatingiz bo'sh",
+      "discount-amount": "Chegirma miqdori",
+      "apply-discount": "Chegirmani qo'llash",
+      "discount-applied": "Chegirma qo'llanildi: -{discount}",
+      "subtotal": "Oraliq summa",
+      "total": "Jami",
+      "create-order": "Buyurtma yaratish"
+    },
+    "dashboard": {
+      "title": "Boshqaruv paneli",
+      "previous-month": "O'tgan oy",
+      "next-month": "Keyingi oy",
+      "card": {
+        "orders": "Buyurtmalar",
+        "revenue": "Daromad",
+        "products": "Mahsulotlar",
+        "stock-status": "Zaxira holati"
+      },
+      "content": {
+        "completed-orders": "Bajarilgan buyurtmalar",
+        "cancelled-orders": "Bekor qilingan buyurtmalar",
+        "pending-orders": "Kutilayotgan buyurtmalar",
+        "processing-orders": "Jarayondagi buyurtmalar",
+        "total-products": "Jami mahsulotlar",
+        "products-in-store": "Do'kondagi mahsulotlar",
+        "sold-products": "Sotilgan mahsulotlar",
+        "store-value": "Do'kon qiymati",
+        "revenue-in-stock": "Mavjud daromad",
+        "out-of-stock": "Sotuvda yo'q",
+        "out-of-stock-items": "Sotuvda bo'lmagan mahsulotlar",
+        "no-out-of-stock": "Sotuvda bo'lmagan mahsulotlar yo'q",
+        "no-category": "Kategoriya yo'q"
+      },
+      "errors": {
+        "fetch": "Boshqaruv paneli ma'lumotlarini yuklashda xatolik yuz berdi"
+      }
+    },
+    "admin-ui": {
+      "product": {
+        "product-toolbar": {
+          "add-product": "Mahsulot qo'shish",
+          "search": "Qidirish"
+        },
+        "product-modal": {
+          "add-title": "Yangi mahsulot qo'shish",
+          "edit-title": "Mahsulotni tahrirlash",
+          "add-description": "Quyida mahsulot ma'lumotlarini to'ldiring",
+          "edit-description": "Quyida mahsulot ma'lumotlarini tahrirlang",
+          "label": {
+            "name": "Mahsulot nomi",
+            "description": "Tavsif",
+            "brand": "Brend",
+            "price": "Narx",
+            "stock": "Soni"
+          },
+          "image": {
+            "label": "Mahsulot rasmi",
+            "browse-files": "Fayllarni tanlash",
+            "image-placeholder": "Rasm yuklash",
+            "image-max-size": "Maksimal fayl hajmi: 10MB",
+            "image-selected": "Rasm tanlandi",
+            "image-removed": "Rasm o'chirildi",
+            "image-error": "Rasm yuklashda xatolik"
+          },
+          "category": {
+            "label": "Kategoriya",
+            "placeholder": "Kategoriyani tanlash"
+          },
+          "cancel": "Bekor qilish",
+          "create": "Mahsulot yaratish",
+          "update": "Mahsulotni yangilash"
+        },
+        "product-card": {
+          "summary": {
+            "title": "Xulosa",
+            "brand": "Brend",
+            "description": "Tavsif"
+          },
+          "sales": "Savdo",
+          "remaining-products": "Qolgan mahsulotlar"
+        },
+        "product-list": {
+          "no-products": "Mahsulotlar topilmadi",
+          "try-adjusting-filters": "Filtrlarni o'zgartirish yoki yangi mahsulot qo'shishni sinab ko'ring."
+        }
+      },
+      "order": {
+        "order-toolbar": {
+          "add-order": "Buyurtma qo'shish",
+          "search": "Qidirish"
+        },
+        "order-list": {
+          "status": {
+            "pending": "Kutilmoqda",
+            "processing": "Jarayonda",
+            "completed": "Yakunlangan",
+            "cancelled": "Bekor qilingan"
+          },
+          "table": {
+            "header": {
+              "id": "ID",
+              "total": "Jami",
+              "status": "Holat",
+              "items": "Mahsulotlar",
+              "created": "Yaratilgan",
+              "actions": "Amallar"
+            }
+          },
+          "messages": {
+            "no-orders": "Buyurtmalar topilmadi",
+            "try-adjusting-filters": "Filtrlarni o'zgartirish yoki yangi buyurtma qo'shishni sinab ko'ring."
+          }
+        },
+        "order-item": {
+          "status": "Holat",
+          "no-stock-left": "Sotuvda yo'q",
+          "low-stock": "Tugab qolmoqda",
+          "in-stock": "Sotuvda mavjud"
+        },
+        "order-product-card": {
+          "out-of-stock": "Sotuvda yo'q",
+          "low-stock": "Tugab qolmoqda",
+          "in-stock": "Sotuvda mavjud",
+          "add-to-order": "Buyurtmaga qo'shish"
+        },
+        "order-modal": {
+          "create-title": "Yangi buyurtma yaratish",
+          "edit-title": "Buyurtmani tahrirlash",
+          "create-description": "Yangi buyurtma yaratish uchun mahsulotlar qo'shing",
+          "edit-description": "Quyida buyurtma ma'lumotlarini o'zgartiring",
+          "products": "Mahsulotlar",
+          "order-items": "Buyurtma mahsulotlari",
+          "items": "ta",
+          "search-products": "Mahsulotlarni qidirish...",
+          "total-amount": "Umumiy summa",
+          "cancel": "Bekor qilish",
+          "create-order": "Buyurtma yaratish",
+          "edit-order": "Buyurtmani yangilash",
+          "saving": "Saqlanmoqda..."
+        }
+      },
+      "category": {
+        "category-toolbar": {
+          "add-category": "Kategoriya qo'shish",
+          "search": "Filtr..."
+        },
+        "category-list": {
+          "table": {
+            "header": {
+              "id": "ID",
+              "name": "Nomi",
+              "created": "Yaratilgan",
+              "updated": "Yangilangan",
+              "actions": "Amallar"
+            }
+          },
+          "messages": {
+            "no-categories": "Kategoriyalar topilmadi",
+            "try-adjusting-filters": "Filtrlarni o'zgartiring yoki yangi kategoriya qo'shing."
+          }
+        },
+        "category-modal": {
+          "edit-title": "Kategoriyani tahrirlash",
+          "add-title": "Kategoriya qo'shish",
+          "edit-description": "Kategoriya nomini o'zgartirish",
+          "add-description": "Yangi kategoriya qo'shish",
+          "name-placeholder": "Kategoriya nomi",
+          "cancel": "Bekor qilish",
+          "update": "Yangilash",
+          "create": "Yaratish"
+        }
+      },
+      "user": {
+        "user-toolbar": {
+          "add-user": "Foydalanuvchi qo'shish",
+          "search": "Filtr..."
+        },
+        "user-list": {
+          "table": {
+            "header": {
+              "id": "ID",
+              "name": "Ism",
+              "email": "Email",
+              "role": "Rol",
+              "created": "Yaratilgan",
+              "actions": "Amallar"
+            }
+          },
+          "messages": {
+            "no-users": "Foydalanuvchilar topilmadi",
+            "try-adjusting-filters": "Filtrlarni o'zgartiring yoki yangi foydalanuvchi qo'shing."
+          }
+        },
+        "user-modal": {
+          "add-title": "Yangi foydalanuvchi qo'shish",
+          "edit-title": "Foydalanuvchini tahrirlash",
+          "add-description": "Quyida foydalanuvchi ma'lumotlarini to'ldiring",
+          "edit-description": "Quyida foydalanuvchi ma'lumotlarini tahrirlang",
+          "name-placeholder": "To'liq ismni kiriting",
+          "email-placeholder": "Email manzilini kiriting",
+          "phone-placeholder": "Telefon raqamini kiriting",
+          "password-placeholder": "Parolni kiriting",
+          "cancel": "Bekor qilish",
+          "create": "Foydalanuvchi yaratish",
+          "update": "Foydalanuvchini yangilash"
+        },
+        "user-role": {
+          "user": "Foydalanuvchi",
+          "admin": "Administrator",
+          "placeholder": "Rolni tanlang"
+        }
+      },
+      "profile": {
+        "profile-modal": {
+          "title": "Profilni tahrirlash",
+          "description": "Quyida profil ma'lumotlaringizni yangilang",
+          "full-name": "To'liq ism",
+          "email": "Email",
+          "phone": "Telefon",
+          "full-name-placeholder": "To'liq ismingizni kiriting",
+          "email-placeholder": "Email manzilingizni kiriting",
+          "phone-placeholder": "Telefon raqamingizni kiriting",
+          "cancel": "Bekor qilish",
+          "update-profile": "Profilni yangilash",
+          "updating": "Yangilanmoqda..."
+        },
+        "profile-page": {
+          "title": "Profil sozlamalari",
+          "edit-profile": "Profilni tahrirlash",
+          "personal-info": {
+            "title": "Shaxsiy ma'lumotlar",
+            "full-name": "To'liq ism",
+            "email": "Email",
+            "phone": "Telefon",
+            "role": "Rol",
+            "no-profile": "Profil ma'lumotlari topilmadi",
+            "try-later": "Iltimos, keyinroq qayta urinib ko'ring."
+          },
+          "change-password": {
+            "title": "Parolni o'zgartirish",
+            "current-password": "Joriy parol",
+            "new-password": "Yangi parol",
+            "confirm-password": "Yangi parolni tasdiqlang",
+            "current-password-placeholder": "Joriy parolni kiriting",
+            "new-password-placeholder": "Yangi parolni kiriting",
+            "confirm-password-placeholder": "Yangi parolni tasdiqlang",
+            "updating": "Yangilanmoqda...",
+            "update-password": "Parolni yangilash"
+          }
+        }
+      }
+    }
+  },
+  "messages": {
+    "success": {
+      "order": {
+        "status-updated": "Buyurtma holati muvaffaqiyatli yangilandi",
+        "order-deleted": "Buyurtma muvaffaqiyatli o'chirildi",
+        "order-created": "Buyurtma muvaffaqiyatli yaratildi",
+        "order-updated": "Buyurtma muvaffaqiyatli yangilandi"
+      },
+      "category": {
+        "category-created": "Kategoriya muvaffaqiyatli yaratildi",
+        "category-updated": "Kategoriya muvaffaqiyatli yangilandi",
+        "category-deleted": "Kategoriya muvaffaqiyatli o'chirildi"
+      },
+      "user": {
+        "user-created": "Foydalanuvchi muvaffaqiyatli yaratildi",
+        "user-updated": "Foydalanuvchi muvaffaqiyatli yangilandi",
+        "user-deleted": "Foydalanuvchi muvaffaqiyatli o'chirildi"
+      },
+      "profile": {
+        "profile-updated": "Profil muvaffaqiyatli yangilandi",
+        "password-updated": "Parol muvaffaqiyatli yangilandi"
+      }
+    },
+    "error": {
+      "order": {
+        "status-updated-failed": "Buyurtma holatini yangilashda xatolik yuz berdi",
+        "order-deleted-failed": "Buyurtmani o'chirishda xatolik yuz berdi",
+        "order-save-failed": "Buyurtmani saqlashda xatolik yuz berdi"
+      },
+      "out-of-stock": "Bu mahsulot hozirda sotuvda yo'q",
+      "low-stock": "Bu mahsulot tugab qolmoqda. Tez orada buyurtma qiling!",
+      "in-stock": "Mahsulot sotuvda mavjud",
+      "category": {
+        "category-create-failed": "Kategoriya yaratishda xatolik yuz berdi",
+        "category-update-failed": "Kategoriyani yangilashda xatolik yuz berdi",
+        "category-delete-failed": "Kategoriyani o'chirishda xatolik yuz berdi"
+      },
+      "user": {
+        "user-create-failed": "Foydalanuvchi yaratishda xatolik yuz berdi",
+        "user-update-failed": "Foydalanuvchini yangilashda xatolik yuz berdi",
+        "user-delete-failed": "Foydalanuvchini o'chirishda xatolik yuz berdi"
+      },
+      "profile": {
+        "profile-update-failed": "Profilni yangilashda xatolik yuz berdi",
+        "password-update-failed": "Parolni yangilashda xatolik yuz berdi",
+        "current-password-required": "Joriy parol talab qilinadi",
+        "new-password-required": "Yangi parol talab qilinadi",
+        "passwords-dont-match": "Yangi parollar mos kelmadi",
+        "password-too-short": "Yangi parol kamida 6 ta belgidan iborat bo'lishi kerak"
+      }
+    }
+  }
+}

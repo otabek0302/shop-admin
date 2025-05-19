@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useModalStore } from "@/store/modal-store";
 import { useCategoryStore } from "@/store/category-store";
+import { useTranslation } from "react-i18next";
 
 const CategoryModal = () => {
   const { open, setOpen } = useModalStore();
   const { editData, createCategory, editCategory, setEditData } = useCategoryStore();
+  const { t } = useTranslation();
 
   const [name, setName] = useState("");
 
@@ -34,19 +36,18 @@ const CategoryModal = () => {
     setEditData(null);
   };
   
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px] shadow-none">
         <DialogHeader>
-          <DialogTitle>{editData ? "Edit Category" : "Add Category"}</DialogTitle>
-          <DialogDescription>{editData ? "Edit the category name" : "Add a new category"}</DialogDescription>
+          <DialogTitle>{editData ? t("components.admin-ui.category.category-modal.edit-title") : t("components.admin-ui.category.category-modal.add-title")}</DialogTitle>
+          <DialogDescription>{editData ? t("components.admin-ui.category.category-modal.edit-description") : t("components.admin-ui.category.category-modal.add-description")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-4">
-          <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Category name" required className="w-full focus-visible:ring-1 shadow-none" />
+          <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("components.admin-ui.category.category-modal.name-placeholder")} required className="w-full focus-visible:ring-1 shadow-none" />
           <div className="mt-2 flex justify-end gap-2">
-            <Button type="button" variant="outline" className="bg-gray-200 hover:bg-gray-100 cursor-pointer" onClick={() => setOpen(false)}>Cancel</Button>
-            <Button type="submit" variant="outline" className="bg-primary text-white hover:bg-primary/90 hover:text-white cursor-pointer">{editData ? "Update" : "Create"}</Button>
+            <Button type="button" variant="outline" className="bg-gray-200 hover:bg-gray-100 cursor-pointer" onClick={() => setOpen(false)}>{t("components.admin-ui.category.category-modal.cancel")}</Button>
+            <Button type="submit" variant="outline" className="bg-primary text-white hover:bg-primary/90 hover:text-white cursor-pointer">{editData ? t("components.admin-ui.category.category-modal.update") : t("components.admin-ui.category.category-modal.create")}</Button>
           </div>
         </form>
       </DialogContent>

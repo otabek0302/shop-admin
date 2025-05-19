@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import OrderList from "@/components/admin-ui/orders/order-list";
-import OrderToolbar from "@/components/admin-ui/orders/order-toolbar";
-import { useOrderStore } from "@/store/order-store";
-import Pagination from "@/components/ui/pagination";
+import OrderList from '@/components/admin-ui/orders/order-list';
+import OrderToolbar from '@/components/admin-ui/orders/order-toolbar';
+import Pagination from '@/components/ui/pagination';
+
+import { useEffect } from 'react';
+import { useOrderStore } from '@/store/order-store';
 
 export default function OrdersPage() {
   const { fetchOrders, page, total, perPage, setPage } = useOrderStore();
@@ -14,15 +15,10 @@ export default function OrdersPage() {
   }, [fetchOrders, page]);
 
   return (
-    <div className="h-full space-y-4 p-4 flex flex-col justify-between">
+    <div className="flex h-full flex-col justify-between space-y-4 p-4">
       <OrderToolbar />
       <OrderList />
-      <Pagination 
-        page={page} 
-        setPage={setPage} 
-        total={total} 
-        perPage={perPage} 
-      />
+      <Pagination page={page} setPage={setPage} total={total} perPage={perPage} />
     </div>
   );
 }

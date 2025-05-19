@@ -1,32 +1,13 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-import { useIsMobile } from "@/hooks/use-mobile"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/ui/toggle-group"
+import * as React from 'react';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, TooltipProps, Tooltip } from 'recharts';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChartConfig, ChartContainer } from '@/components/ui/chart';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { formatCurrency } from '@/lib/utils';
 
 interface ChartData {
   date: string;
@@ -36,71 +17,78 @@ interface ChartData {
 
 const chartConfig = {
   revenue: {
-    label: "Revenue",
-    color: "hsl(var(--chart-1))",
+    label: 'Revenue',
+    color: 'hsl(var(--chart-1))',
   },
   orders: {
-    label: "Orders",
-    color: "hsl(var(--chart-2))",
+    label: 'Orders',
+    color: 'hsl(var(--chart-2))',
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
+
+const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+  if (active && payload && payload.length) {
+    const revenue = payload.find((item) => item.dataKey === 'revenue')?.value ?? 0;
+    const orders = payload.find((item) => item.dataKey === 'orders')?.value ?? 0;
+
+    return (
+      <div className="bg-background rounded-lg border p-2 shadow-sm">
+        <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-col">
+            <span className="text-muted-foreground text-[0.70rem] uppercase">Revenue</span>
+            <span className="text-muted-foreground font-bold">{formatCurrency(revenue)}</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-muted-foreground text-[0.70rem] uppercase">Orders</span>
+            <span className="text-muted-foreground font-bold">{orders}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
 
 export function ChartAreaInteractive() {
-  const isMobile = useIsMobile()
-  const [timeRange, setTimeRange] = React.useState("30d")
-  const [data, setData] = React.useState<ChartData[]>([])
-  const [loading, setLoading] = React.useState(true)
+  const isMobile = useIsMobile();
+  const [timeRange, setTimeRange] = React.useState('30d');
+  const [data, setData] = React.useState<ChartData[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     if (isMobile) {
-      setTimeRange("7d")
+      setTimeRange('7d');
     }
-  }, [isMobile])
+  }, [isMobile]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/dashboard")
-        const dashboardData = await response.json()
-        
-        // Create chart data from dashboard data
-        const chartData = [{
-          date: new Date().toISOString().split('T')[0],
-          revenue: dashboardData.totalRevenue,
-          orders: dashboardData.totalOrders,
-        }]
-        
-        setData(chartData)
+        const response = await fetch(`/api/dashboard?timeRange=${timeRange}`);
+        const dashboardData = await response.json();
+        setData(dashboardData.dailyStats || []);
       } catch (error) {
-        console.error("Error fetching chart data:", error)
+        console.error('Error fetching chart data:', error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [timeRange])
+    fetchData();
+  }, [timeRange]);
 
-  if (loading) return null
+  if (loading) return null;
 
   return (
     <Card className="@container/card">
       <CardHeader className="relative">
         <CardTitle>Sales Overview</CardTitle>
         <CardDescription>
-          <span className="@[540px]/card:block hidden">
-            Total revenue and orders
-          </span>
+          <span className="hidden @[540px]/card:block">Total revenue and orders</span>
           <span className="@[540px]/card:hidden">Revenue & Orders</span>
         </CardDescription>
-        <div className="absolute right-4 top-4">
-          <ToggleGroup
-            type="single"
-            value={timeRange}
-            onValueChange={setTimeRange}
-            variant="outline"
-            className="@[767px]/card:flex hidden"
-          >
+        <div className="absolute top-4 right-4">
+          <ToggleGroup type="single" value={timeRange} onValueChange={setTimeRange} variant="outline" className="hidden @[767px]/card:flex">
             <ToggleGroupItem value="90d" className="h-8 px-2.5">
               Last 3 months
             </ToggleGroupItem>
@@ -112,10 +100,7 @@ export function ChartAreaInteractive() {
             </ToggleGroupItem>
           </ToggleGroup>
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger
-              className="@[767px]/card:hidden flex w-40"
-              aria-label="Select a value"
-            >
+            <SelectTrigger className="flex w-40 @[767px]/card:hidden" aria-label="Select a value">
               <SelectValue placeholder="Last 3 months" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
@@ -133,37 +118,8 @@ export function ChartAreaInteractive() {
         </div>
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <AreaChart data={data}>
-            <defs>
-              <linearGradient id="fillRevenue" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-revenue)"
-                  stopOpacity={1.0}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-revenue)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient id="fillOrders" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-orders)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-orders)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
+        <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
+          <BarChart data={data} barGap={8}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
@@ -172,44 +128,20 @@ export function ChartAreaInteractive() {
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value: string) => {
-                const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                })
+                const date = new Date(value);
+                return date.toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                });
               }}
             />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(value: string) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    })
-                  }}
-                  indicator="dot"
-                />
-              }
-            />
-            <Area
-              dataKey="revenue"
-              type="natural"
-              fill="url(#fillRevenue)"
-              stroke="var(--color-revenue)"
-              stackId="a"
-            />
-            <Area
-              dataKey="orders"
-              type="natural"
-              fill="url(#fillOrders)"
-              stroke="var(--color-orders)"
-              stackId="a"
-            />
-          </AreaChart>
+            <YAxis tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => `$${value}`} />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar dataKey="revenue" fill="var(--color-revenue)" radius={[4, 4, 0, 0]} maxBarSize={40} />
+            <Bar dataKey="orders" fill="var(--color-orders)" radius={[4, 4, 0, 0]} maxBarSize={40} />
+          </BarChart>
         </ChartContainer>
       </CardContent>
     </Card>
-  )
-} 
+  );
+}
