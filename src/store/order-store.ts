@@ -74,24 +74,26 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
     }
   },
 
-  createOrder: async (orderData) => {
+  createOrder: async (orderData: CreateOrderDTO) => {
     try {
       set({ loading: true, error: null });
-      const res = await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(orderData),
       });
 
       if (!res.ok) {
         const error = await res.json();
-        throw new Error(error.message || "Failed to create order");
+        throw new Error(error.message || 'Failed to create order');
       }
 
       await get().fetchOrders();
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Error creating order";
-      console.error("[CREATE_ORDER_ERROR]", err);
+      const errorMessage = err instanceof Error ? err.message : 'Error creating order';
+      console.error('[CREATE_ORDER_ERROR]', err);
       set({ error: errorMessage });
       throw new Error(errorMessage);
     } finally {
@@ -99,24 +101,26 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
     }
   },
 
-  updateOrder: async (id, orderData) => {
+  updateOrder: async (id: string, orderData: UpdateOrderDTO) => {
     try {
       set({ loading: true, error: null });
       const res = await fetch(`/api/orders/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(orderData),
       });
 
       if (!res.ok) {
         const error = await res.json();
-        throw new Error(error.message || "Failed to update order");
+        throw new Error(error.message || 'Failed to update order');
       }
 
       await get().fetchOrders();
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Error updating order";
-      console.error("[UPDATE_ORDER_ERROR]", err);
+      const errorMessage = err instanceof Error ? err.message : 'Error updating order';
+      console.error('[UPDATE_ORDER_ERROR]', err);
       set({ error: errorMessage });
       throw new Error(errorMessage);
     } finally {

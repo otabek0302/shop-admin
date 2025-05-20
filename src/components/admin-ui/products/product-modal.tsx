@@ -4,7 +4,7 @@ import ProductCategory from './product-category';
 import ProductImage from './product-image';
 import { ProductFormData } from '@/interfaces/products';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,12 +13,13 @@ import { useEffect, useState } from 'react';
 import { useProductStore } from '@/store/product-store';
 import { useModalStore } from '@/store/modal-store';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 const ProductModal = () => {
   const { t } = useTranslation();
 
   const { open, setOpen } = useModalStore();
-  const { editData, setEditData, editProduct, createProduct } = useProductStore();
+  const { editData, setEditData, editProduct, createProduct, loading } = useProductStore();
 
   const [product, setProduct] = useState<ProductFormData>({
     name: '',
@@ -31,6 +32,7 @@ const ProductModal = () => {
   });
 
   const [image, setImage] = useState<File | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (editData) {
@@ -55,6 +57,7 @@ const ProductModal = () => {
       });
       setImage(null);
     }
+    setError(null);
   }, [editData, open]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -63,36 +66,75 @@ const ProductModal = () => {
       ...prev,
       [id]: id === 'price' || id === 'stock' ? Number(value) : value,
     }));
+    setError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!product.category || (!image && !editData?.image)) return;
+    setError(null);
 
-    const base64 = image
-      ? await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(image);
-        })
-      : null;
-
-    const productData: ProductFormData = {
-      ...product,
-      imageBase64: base64,
-      category: typeof product.category === 'string' ? product.category : product.category.id,
-    };
-
-    if (editData) {
-      await editProduct(editData.id, productData);
-    } else {
-      await createProduct(productData);
+    // Validate required fields
+    if (!product.name.trim()) {
+      setError(t('components.admin-ui.product.product-modal.error.name-required'));
+      return;
+    }
+    if (!product.description.trim()) {
+      setError(t('components.admin-ui.product.product-modal.error.description-required'));
+      return;
+    }
+    if (!product.brand.trim()) {
+      setError(t('components.admin-ui.product.product-modal.error.brand-required'));
+      return;
+    }
+    if (!product.category) {
+      setError(t('components.admin-ui.product.product-modal.error.category-required'));
+      return;
+    }
+    if (product.price <= 0) {
+      setError(t('components.admin-ui.product.product-modal.error.price-invalid'));
+      return;
+    }
+    if (product.stock < 0) {
+      setError(t('components.admin-ui.product.product-modal.error.stock-invalid'));
+      return;
+    }
+    if (!image && !editData?.image) {
+      setError(t('components.admin-ui.product.product-modal.error.image-required'));
+      return;
     }
 
-    setOpen(false);
-    setEditData(null);
-    setImage(null);
+    try {
+      const base64 = image
+        ? await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(image);
+          })
+        : null;
+
+      const productData: ProductFormData = {
+        ...product,
+        imageBase64: base64,
+        category: typeof product.category === 'string' ? product.category : product.category.id,
+      };
+
+      if (editData) {
+        await editProduct(editData.id, productData);
+        toast.success(t('components.admin-ui.product.product-modal.success.update'));
+      } else {
+        await createProduct(productData);
+        toast.success(t('components.admin-ui.product.product-modal.success.create'));
+      }
+
+      setOpen(false);
+      setEditData(null);
+      setImage(null);
+    } catch (error) {
+      console.error('[PRODUCT_SUBMIT_ERROR]', error);
+      setError(error instanceof Error ? error.message : t('components.admin-ui.product.product-modal.error.submit-failed'));
+      toast.error(t('components.admin-ui.product.product-modal.error.submit-failed'));
+    }
   };
 
   return (
@@ -102,16 +144,18 @@ const ProductModal = () => {
         if (!isOpen) {
           setEditData(null);
           setImage(null);
+          setError(null);
         }
         setOpen(isOpen);
       }}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{editData ? t('components.admin-ui.product.product-modal.edit-title') : t('components.admin-ui.product.product-modal.add-title')}</DialogTitle>
-        </DialogHeader>
+      <DialogContent className="w-full max-w-md sm:max-w-xl h-[95vh] overflow-y-auto sm:rounded-lg no-scrollbar">
+        <DialogTitle>{editData ? t('components.admin-ui.product.product-modal.edit-title') : t('components.admin-ui.product.product-modal.add-title')}</DialogTitle>
+        <DialogDescription>{editData ? t('components.admin-ui.product.product-modal.edit-description') : t('components.admin-ui.product.product-modal.add-description')}</DialogDescription>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <ProductImage image={image} setImage={setImage} existingImage={editData?.image} />
+
+          {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-500">{error}</div>}
 
           <div className="grid gap-2">
             <Label htmlFor="name">{t('components.admin-ui.product.product-modal.label.name')}</Label>
@@ -132,26 +176,35 @@ const ProductModal = () => {
 
           <div className="grid gap-2">
             <Label htmlFor="price">{t('components.admin-ui.product.product-modal.label.price')}</Label>
-            <Input id="price" type="number" value={product.price} onChange={handleChange} required min={0} />
+            <Input id="price" type="text" value={product.price} onChange={handleChange} required min={0} step="0.01" />
           </div>
 
           <div className="grid gap-2">
             <Label htmlFor="stock">{t('components.admin-ui.product.product-modal.label.stock')}</Label>
-            <Input id="stock" type="number" value={product.stock} onChange={handleChange} required min={0} />
+            <Input id="stock" type="text" value={product.stock} onChange={handleChange} required min={0} />
           </div>
 
           <div className="flex justify-end gap-2 pt-4">
             <Button
               type="button"
               variant="outline"
+              disabled={loading}
               onClick={() => {
                 setOpen(false);
                 setEditData(null);
                 setImage(null);
+                setError(null);
               }}>
               {t('components.admin-ui.product.product-modal.cancel')}
             </Button>
-            <Button type="submit">{editData ? t('components.admin-ui.product.product-modal.update') : t('components.admin-ui.product.product-modal.create')}</Button>
+            <Button disabled={loading} className={`relative ${loading ? 'opacity-70' : ''}`} type="submit">
+              {loading && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                </div>
+              )}
+              <span className={loading ? 'opacity-0' : ''}>{editData ? t('components.admin-ui.product.product-modal.update') : t('components.admin-ui.product.product-modal.create')}</span>
+            </Button>
           </div>
         </form>
       </DialogContent>

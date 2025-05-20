@@ -8,10 +8,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useProductStore } from '@/store/product-store';
 import { useConfirmStore } from '@/store/confirm-store';
 import { useTranslation } from 'react-i18next';
+import { useModalStore } from '@/store/modal-store';
 
 const ProductList = () => {
   const { t } = useTranslation();
 
+  const { open } = useModalStore();
   const { products, deleteData, deleteProduct, loading } = useProductStore();
   const { closeConfirm } = useConfirmStore();
 
@@ -58,7 +60,7 @@ const ProductList = () => {
 
   return (
     <div className="mt-4 h-full">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
         {loading &&
           Array(3)
             .fill(0)
@@ -73,7 +75,7 @@ const ProductList = () => {
       </div>
 
       <ConfirmDialog message="Are you sure you want to delete this product?" title="Delete Product" action="Delete" onConfirm={confirmDelete} />
-      <ProductModal />
+      {open && <ProductModal />}
     </div>
   );
 };

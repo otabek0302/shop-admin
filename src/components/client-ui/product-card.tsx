@@ -25,10 +25,17 @@ export function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div key={product.id} className="flex rounded-md border p-4">
+    <div key={product.id} className="flex flex-col md:flex-row rounded-md border p-4">
       {/* Image */}
-      <div className="relative mr-4 h-20 w-20 overflow-hidden rounded-md border">
-        <Image src={product.image?.url || '/placeholder.svg'} alt={product.name} fill className="object-cover" />
+      <div className="relative h-52 w-full overflow-hidden rounded-md border md:mr-0 md:h-24 md:w-24">
+        <Image 
+          src={product.image?.url || '/placeholder.svg'} 
+          alt={product.name} 
+          fill 
+          sizes="(max-width: 768px) 100vw, 96px"
+          priority
+          className="object-cover" 
+        />
         {isOutOfStock && (
           <div className="absolute inset-0 flex items-center justify-center rounded-md bg-yellow-500/10">
             <AlertTriangle className="h-6 w-6 text-yellow-500" />
@@ -37,7 +44,7 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
 
       {/* Name, Description, Stock Badge */}
-      <div className="flex-grow">
+      <div className="flex-grow md:ml-4 mt-2 md:mt-0">
         <h3 className="line-clamp-1 text-base font-medium">{product.name}</h3>
         <p className="line-clamp-2 text-xs text-gray-600">{product.description}</p>
 
@@ -54,7 +61,7 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
 
       {/* Price & Quantity Controls */}
-      <div className="flex flex-col items-end justify-between">
+      <div className="flex flex-col items-end justify-between mt-4 md:mt-0">
         <h3 className="text-lg font-semibold">{product.price.toLocaleString()}</h3>
 
         {quantityInCart > 0 ? (
@@ -62,7 +69,7 @@ export function ProductCard({ product }: { product: Product }) {
             <Counter productId={product.id} value={quantityInCart} max={product.stock} size="sm" />
           </div>
         ) : (
-          <Button variant="outline" size="sm" className="mt-2" onClick={() => onAddToCart(product)} disabled={isOutOfStock}>
+          <Button variant="outline" size="lg" className="mt-2" onClick={() => onAddToCart(product)} disabled={isOutOfStock}>
             {t('components.product-card.add-to-cart')}
           </Button>
         )}

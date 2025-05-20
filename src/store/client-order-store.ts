@@ -26,7 +26,7 @@ interface ClientOrderStore {
     getQuantityForProduct: (productId: string) => number;
 
     // Async logic
-    createOrder: (data: { items: { productId: string; quantity: number; price: number }[]; status: string }) => Promise<void>;
+    createOrder: (data: { items: { productId: string; quantity: number; price: number }[]; status: string; discount?: number }) => Promise<void>;
 }
 
 export const useClientOrderStore = create<ClientOrderStore>((set, get) => ({
@@ -116,10 +116,14 @@ export const useClientOrderStore = create<ClientOrderStore>((set, get) => ({
         try {
             set({ loading: true, error: null });
 
+            const orderData = {
+                ...data,
+            };
+
             const res = await fetch("/api/orders", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
+                body: JSON.stringify(orderData),
             });
 
             if (!res.ok) {

@@ -29,7 +29,7 @@ export const ProductCard = ({ product, onClick }: { product: Product; onClick: (
   };
 
   return (
-    <Card className={`hover:border-primary/20 p-4 transition-all duration-200 hover:shadow-md active:scale-[0.98] ${isOutOfStock ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`} onClick={!isOutOfStock ? onClick : undefined}>
+    <Card className={`hover:border-primary/20 p-4 transition-all duration-200 active:scale-[0.98] ${isOutOfStock ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`} onClick={!isOutOfStock ? onClick : undefined}>
       <div className="flex items-center gap-4">
         <div className="bg-muted relative h-16 w-16 overflow-hidden rounded-lg border">
           <Image src={getImageUrl(product.image)} alt={product.name} fill className="object-cover" />
@@ -41,12 +41,13 @@ export const ProductCard = ({ product, onClick }: { product: Product; onClick: (
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate text-base font-semibold">{product.name}</p>
-          <p className="text-muted-foreground mt-1 text-sm">₹{product.price.toFixed(2).toLocaleString()}</p>
+          <p className="text-muted-foreground mt-1 text-sm">{product.price.toLocaleString()}</p>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <Badge variant={getStockBadgeVariant()} className="mt-1">
+                <Badge variant={getStockBadgeVariant()} className="mt-1 space-x-1">
                   {getStockMessage()}
+                  <span className="text-xs text-primary">{product.stock}</span>
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>{isLowStock ? t('components.admin-ui.order.order-product-card.low-stock') : isOutOfStock ? t('components.admin-ui.order.order-product-card.out-of-stock') : t('components.admin-ui.order.order-product-card.in-stock')}</TooltipContent>

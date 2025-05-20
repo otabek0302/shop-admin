@@ -19,6 +19,7 @@ const ProductTableToolbar = () => {
       <div className="flex items-center justify-between">
         <Input placeholder={t('components.admin-ui.product.product-toolbar.search')} value={search} onChange={handleFilterChange} className="h-10 w-[150px] lg:w-[250px]" />
         <Button
+          className="cursor-pointer"
           onClick={() => {
             setEditData(null);
             setOpen(true);

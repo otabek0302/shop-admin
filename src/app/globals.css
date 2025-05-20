@@ -194,3 +194,11 @@
     animation-timing-function: ease-in;
   }
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}

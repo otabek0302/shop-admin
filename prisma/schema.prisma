@@ -46,6 +46,7 @@ model Order {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   orderItems OrderItem[]
   total     Float
+  discount  Float    @default(0)
   status    OrderStatus @default(PENDING)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

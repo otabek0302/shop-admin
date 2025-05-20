@@ -77,14 +77,14 @@ export default function DashboardPage() {
   if (!data) return null;
 
   return (
-    <section className="h-screen space-y-4 p-4">
-      <div className="mb-4 flex items-center justify-between">
+    <section className="h-full xl:h-screen space-y-4 p-4">
+      <div className="mb-4 flex flex-col md:flex-row items-center justify-between">
         <h1 className="text-2xl font-bold">{t('components.dashboard.title')}</h1>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 mt-3 md:mt-0">
           <Button variant="outline" onClick={handlePreviousMonth}>
             {t('components.dashboard.previous-month')}
           </Button>
-          <span className="font-semibold">{format(selectedDate, 'MMMM yyyy', { locale: locales[i18n.language as keyof typeof locales] })}</span>
+          <span className="text-sm md:text-base font-semibold text-center">{format(selectedDate, 'MMMM yyyy', { locale: locales[i18n.language as keyof typeof locales] })}</span>
           <Button variant="outline" onClick={handleNextMonth} disabled={isAtCurrentMonth}>
             {t('components.dashboard.next-month')}
           </Button>
@@ -170,12 +170,12 @@ export default function DashboardPage() {
       {/* Chart and Out of Stock Products */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {/* Chart */}
-        <div className="h-[400px] flex-1">
+        <div className="flex-1">
           <ChartAreaInteractive />
         </div>
 
         {/* Out of Stock Products List */}
-        <Card className="h-[400px]">
+        <Card className="flex-1">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="text-destructive h-5 w-5" />
@@ -187,7 +187,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             {data.outOfStockProductsList.length > 0 ? (
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <div className="max-h-[320px] space-y-2 overflow-y-auto">
                   {data.outOfStockProductsList.map((p) => (
                     <div key={p.id} className="hover:bg-muted/50 flex items-center justify-between rounded-lg border p-3">

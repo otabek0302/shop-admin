@@ -11,7 +11,7 @@ export async function PATCH(
 ) {
     try {
         const orderId = params.id;
-        const { items, status } = await req.json();
+        const { items, status, discount = 0 } = await req.json();
 
         // Validate status if provided
         if (status && !Object.values(OrderStatus).includes(status)) {
@@ -84,7 +84,8 @@ export async function PATCH(
                     return await tx.order.update({
                         where: { id: orderId },
                         data: {
-                            status: status as OrderStatus
+                            status: status as OrderStatus,
+                            discount: discount
                         },
                         include: {
                             orderItems: {
@@ -126,7 +127,6 @@ export async function PATCH(
                 const currentOrderItem = existingOrder.orderItems.find(oi => oi.productId === item.productId);
                 const availableStock = product.stock + (currentOrderItem?.quantity || 0);
 
-
                 if (availableStock < item.quantity) {
                     return NextResponse.json({
                         error: `Insufficient stock for ${product.name}. Available: ${availableStock}, Requested: ${item.quantity}`
@@ -135,7 +135,7 @@ export async function PATCH(
             }
         }
 
-        // Calculate new items and total
+        // Calculate new items and subtotal
         const newItems = items.map((item: { productId: string; quantity: number; price: number }) => ({
             orderId,
             productId: item.productId,
@@ -144,7 +144,8 @@ export async function PATCH(
             total: item.price * item.quantity,
         }));
 
-        const total = newItems.reduce((sum: number, item: { total: number }) => sum + item.total, 0);
+        const subtotal = newItems.reduce((sum: number, item: { total: number }) => sum + item.total, 0);
+        const total = Math.max(0, subtotal - discount);
 
         // Update order and handle stock changes in a transaction
         const updatedOrder = await prisma.$transaction(async (tx) => {
@@ -209,6 +210,7 @@ export async function PATCH(
                     data: {
                         status: status || OrderStatus.PENDING,
                         total,
+                        discount,
                         orderItems: {
                             create: newItems.map((item: { productId: string; quantity: number; price: number; total: number }) => ({
                                 product: {

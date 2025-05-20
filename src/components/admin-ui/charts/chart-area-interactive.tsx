@@ -32,7 +32,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
     const orders = payload.find((item) => item.dataKey === 'orders')?.value ?? 0;
 
     return (
-      <div className="bg-background rounded-lg border p-2 shadow-sm">
+      <div className="bg-background rounded-lg border p-2">
         <div className="grid grid-cols-2 gap-2">
           <div className="flex flex-col">
             <span className="text-muted-foreground text-[0.70rem] uppercase">Revenue</span>

@@ -35,7 +35,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <div className="flex items-start justify-between">
         <div className="flex gap-4">
           <div className="border-border relative h-32 w-32 overflow-hidden rounded-md border">
-            <Image src={product?.image?.url} alt={product?.name} fill className="object-cover object-center" />
+            <Image 
+              src={product?.image?.url} 
+              alt={product?.name} 
+              fill 
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority
+              className="object-cover object-center" 
+            />
           </div>
           <div className="flex flex-col justify-center space-y-2">
             <h2 className="text-xl font-bold">{product?.name}</h2>

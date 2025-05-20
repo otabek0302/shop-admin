@@ -29,7 +29,8 @@
       "description": "Login to your account",
       "email": "Email",
       "password": "Password",
-      "forgot-password": "Forgot your password?"
+      "forgot-password": "Forgot your password?",
+      "login": "Login"
     },
     "sidebar": {
       "home": "Home",
@@ -56,7 +57,8 @@
       "discount-applied": "Discount applied: -{discount}",
       "subtotal": "Subtotal",
       "total": "Total",
-      "create-order": "Create Order"
+      "create-order": "Create Order",
+      "discount": "Discount"
     },
     "dashboard": {
       "title": "Dashboard",
@@ -120,7 +122,21 @@
           },
           "cancel": "Cancel",
           "create": "Create Product",
-          "update": "Update Product"
+          "update": "Update Product",
+          "error": {
+            "name-required": "Product name is required",
+            "description-required": "Product description is required",
+            "brand-required": "Product brand is required",
+            "category-required": "Product category is required",
+            "price-invalid": "Price must be greater than 0",
+            "stock-invalid": "Stock cannot be negative",
+            "image-required": "Product image is required",
+            "submit-failed": "Failed to submit product"
+          },
+          "success": {
+            "create": "Product created successfully",
+            "update": "Product updated successfully"
+          }
         },
         "product-card": {
           "summary": {
@@ -352,6 +368,145 @@
         "new-password-required": "New password is required",
         "passwords-dont-match": "New passwords do not match",
         "password-too-short": "New password must be at least 6 characters long"
+      }
+    }
+  },
+  "privacy-policy": {
+    "title": "Privacy Policy",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "content": "This Privacy Policy describes how we collect, use, and handle your personal information when you use our website and services. We are committed to protecting your privacy and ensuring you have a positive experience on our site."
+      },
+      "information": {
+        "title": "Information We Collect",
+        "subtitle": "We collect information that you provide directly to us, including:",
+        "items": {
+          "name": "Name and contact information",
+          "credentials": "Account credentials",
+          "payment": "Payment information",
+          "preferences": "Communication preferences"
+        }
+      },
+      "usage": {
+        "title": "How We Use Your Information",
+        "subtitle": "We use the information we collect to:",
+        "items": {
+          "services": "Provide and maintain our services",
+          "transactions": "Process your transactions",
+          "notices": "Send you technical notices and support messages",
+          "communication": "Communicate with you about products, services, and events",
+          "improvement": "Improve our website and services"
+        }
+      },
+      "security": {
+        "title": "Data Security",
+        "content": "We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction."
+      },
+      "rights": {
+        "title": "Your Rights",
+        "subtitle": "You have the right to:",
+        "items": {
+          "access": "Access your personal information",
+          "correct": "Correct inaccurate data",
+          "delete": "Request deletion of your data",
+          "object": "Object to processing of your data",
+          "portability": "Data portability"
+        }
+      }
+    }
+  },
+  "cookies": {
+    "title": "Cookie Policy",
+    "sections": {
+      "what": {
+        "title": "What are Cookies?",
+        "content": "Cookies are small text files that are placed on your computer or mobile device when you visit our website. They are widely used to make websites work more efficiently and provide useful information to website owners."
+      },
+      "types": {
+        "title": "Types of Cookies We Use",
+        "subtitle": "We use different types of cookies for various purposes:",
+        "items": {
+          "essential": "Essential cookies: Required for the website to function properly",
+          "functional": "Functional cookies: Remember your preferences and settings",
+          "analytics": "Analytics cookies: Help us understand how visitors use our website",
+          "marketing": "Marketing cookies: Used to deliver relevant advertisements"
+        }
+      },
+      "usage": {
+        "title": "How We Use Cookies",
+        "subtitle": "We use cookies for the following purposes:",
+        "items": {
+          "authentication": "Authentication: To keep you signed in and secure",
+          "preferences": "Preferences: To remember your settings and choices",
+          "security": "Security: To protect your account and prevent fraud",
+          "analytics": "Analytics: To understand how visitors interact with our website"
+        }
+      },
+      "management": {
+        "title": "Managing Cookies",
+        "content": "You have control over the cookies used on our website. Here's how you can manage them:",
+        "browser": {
+          "title": "Browser Settings",
+          "content": "Most web browsers allow you to control cookies through their settings preferences. You can set your browser to refuse cookies or delete certain cookies. However, if you choose to block or delete cookies, some features of our website may not function properly."
+        },
+        "third-party": {
+          "title": "Third-Party Cookies",
+          "content": "Some cookies are placed by third-party services that appear on our pages. We do not control the use of these cookies and cannot access them due to the way that cookies work, as cookies can only be accessed by the party who originally set them."
+        }
+      }
+    }
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "sections": {
+      "agreement": {
+        "title": "1. Agreement to Terms",
+        "content": "By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement."
+      },
+      "license": {
+        "title": "2. Use License",
+        "content": "Permission is granted to temporarily access the materials (information or software) on our website for personal, non-commercial transitory viewing only.",
+        "subtitle": "This is the grant of a license, not a transfer of title, and under this license you may not:",
+        "items": {
+          "modify": "Modify or copy the materials",
+          "commercial": "Use the materials for any commercial purpose",
+          "reverse": "Attempt to decompile or reverse engineer any software contained on the website",
+          "copyright": "Remove any copyright or other proprietary notations from the materials"
+        }
+      },
+      "account": {
+        "title": "3. User Account",
+        "content": "If you create an account on the website, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account.",
+        "items": {
+          "security": "Maintain the security of your account and password",
+          "accuracy": "Provide accurate and complete information when creating your account",
+          "notify": "Notify us immediately of any unauthorized use of your account"
+        }
+      },
+      "disclaimer": {
+        "title": "4. Disclaimer",
+        "content": "The materials on our website are provided on an 'as is' basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property."
+      },
+      "limitations": {
+        "title": "5. Limitations",
+        "content": "In no event shall we or our suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on our website."
+      },
+      "revisions": {
+        "title": "6. Revisions and Errata",
+        "content": "The materials appearing on our website could include technical, typographical, or photographic errors. We do not warrant that any of the materials on our website are accurate, complete, or current."
+      },
+      "links": {
+        "title": "7. Links",
+        "content": "We have not reviewed all of the sites linked to our website and are not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by us of the site."
+      },
+      "modifications": {
+        "title": "8. Modifications",
+        "content": "We may revise these terms of service for our website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service."
+      },
+      "law": {
+        "title": "9. Governing Law",
+        "content": "These terms and conditions are governed by and construed in accordance with the laws and you irrevocably submit to the exclusive jurisdiction of the courts in that location."
       }
     }
   }

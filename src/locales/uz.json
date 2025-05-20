@@ -30,7 +30,8 @@
       "description": "Hisobingizga kiring",
       "email": "Elektron pochta",
       "password": "Parol",
-      "forgot-password": "Parolni unutdingizmi?"
+      "forgot-password": "Parolni unutdingizmi?",
+      "login": "Kirish"
     },
     "sidebar": {
       "home": "Bosh sahifa",
@@ -57,7 +58,8 @@
       "discount-applied": "Chegirma qo'llanildi: -{discount}",
       "subtotal": "Oraliq summa",
       "total": "Jami",
-      "create-order": "Buyurtma yaratish"
+      "create-order": "Buyurtma yaratish",
+      "discount": "Chegirma"
     },
     "dashboard": {
       "title": "Boshqaruv paneli",
@@ -108,7 +110,7 @@
           },
           "image": {
             "label": "Mahsulot rasmi",
-            "browse-files": "Fayllarni tanlash",
+            "browse-files": "Fayl tanlash",
             "image-placeholder": "Rasm yuklash",
             "image-max-size": "Maksimal fayl hajmi: 10MB",
             "image-selected": "Rasm tanlandi",
@@ -117,11 +119,24 @@
           },
           "category": {
             "label": "Kategoriya",
-            "placeholder": "Kategoriyani tanlash"
+            "placeholder": "Kategoriyani tanlang"
           },
           "cancel": "Bekor qilish",
           "create": "Mahsulot yaratish",
-          "update": "Mahsulotni yangilash"
+          "update": "Mahsulotni yangilash",
+          "error": {
+            "name-required": "Mahsulot nomi majburiy",
+            "description-required": "Tavsif majburiy",
+            "brand-required": "Brend majburiy",
+            "category-required": "Kategoriya majburiy",
+            "price-invalid": "Narx 0 dan katta bo'lishi kerak",
+            "stock-invalid": "Soni manfiy bo'lishi mumkin emas",
+            "submit-failed": "Mahsulotni saqlashda xatolik"
+          },
+          "success": {
+            "create": "Mahsulot muvaffaqiyatli yaratildi",
+            "update": "Mahsulot muvaffaqiyatli yangilandi"
+          }
         },
         "product-card": {
           "summary": {
@@ -353,6 +368,145 @@
         "new-password-required": "Yangi parol talab qilinadi",
         "passwords-dont-match": "Yangi parollar mos kelmadi",
         "password-too-short": "Yangi parol kamida 6 ta belgidan iborat bo'lishi kerak"
+      }
+    }
+  },
+  "privacy-policy": {
+    "title": "Maxfiylik siyosati",
+    "sections": {
+      "introduction": {
+        "title": "Kirish",
+        "content": "Bu Maxfiylik siyosati bizning veb-saytimiz va xizmatlarimizdan foydalanganingizda shaxsiy ma'lumotlaringizni qanday to'plash, ishlatish va boshqarishni tavsiflaydi. Biz sizning maxfiyligingizni himoya qilish va saytimizda ijobiy tajriba o'tkazishga intilamiz."
+      },
+      "information": {
+        "title": "Biz to'playdigan ma'lumotlar",
+        "subtitle": "Biz siz to'g'ridan-to'g'ri taqdim etgan ma'lumotlarni to'playmiz, jumladan:",
+        "items": {
+          "name": "Ism va aloqa ma'lumotlari",
+          "credentials": "Hisob ma'lumotlari",
+          "payment": "To'lov ma'lumotlari",
+          "preferences": "Aloqa sozlamalari"
+        }
+      },
+      "usage": {
+        "title": "Ma'lumotlaringizni qanday ishlatamiz",
+        "subtitle": "Biz to'plangan ma'lumotlarni quyidagi maqsadlarda ishlatamiz:",
+        "items": {
+          "services": "Xizmatlarimizni ta'minlash va saqlash",
+          "transactions": "Tranzaktsiyalaringizni bajarish",
+          "notices": "Texnik xabarnomalar va qo'llab-quvvatlash xabarlarini yuborish",
+          "communication": "Mahsulotlar, xizmatlar va tadbirlar haqida siz bilan aloqa qilish",
+          "improvement": "Veb-saytimiz va xizmatlarimizni yaxshilash"
+        }
+      },
+      "security": {
+        "title": "Ma'lumotlar xavfsizligi",
+        "content": "Biz sizning shaxsiy ma'lumotlaringizni ruxsatsiz kirish, o'zgartirish, oshkor qilish yoki yo'q qilishdan himoya qilish uchun tegishli texnik va tashkiliy choralarni qo'llaymiz."
+      },
+      "rights": {
+        "title": "Sizning huquqlaringiz",
+        "subtitle": "Siz quyidagi huquqlarga egasiz:",
+        "items": {
+          "access": "Shaxsiy ma'lumotlaringizga kirish",
+          "correct": "Noto'g'ri ma'lumotlarni tuzatish",
+          "delete": "Ma'lumotlaringizni o'chirishni so'rash",
+          "object": "Ma'lumotlaringizni qayta ishlashga e'tiroz bildirish",
+          "portability": "Ma'lumotlarni ko'chirish huquqi"
+        }
+      }
+    }
+  },
+  "cookies": {
+    "title": "Kukilar siyosati",
+    "sections": {
+      "what": {
+        "title": "Kukilar nima?",
+        "content": "Kukilar - bu siz bizning veb-saytimizga tashrif buyurganingizda kompyuteringiz yoki mobil qurilmangizga joylashtiriladigan kichik matn fayllari. Ular veb-saytlarni yanada samarali ishlashini ta'minlash va veb-sayt egalariga foydali ma'lumot berish uchun keng qo'llaniladi."
+      },
+      "types": {
+        "title": "Biz qo'llaydigan kukilar turlari",
+        "subtitle": "Biz turli maqsadlar uchun turli xil kukilardan foydalanamiz:",
+        "items": {
+          "essential": "Muhim kukilar: Veb-saytning to'g'ri ishlashi uchun zarur",
+          "functional": "Funksional kukilar: Sizning sozlamalaringiz va tanlovlaringizni eslab qolish uchun",
+          "analytics": "Analitik kukilar: Tashrif buyuruvchilar veb-saytimizdan qanday foydalanishini tushunishga yordam beradi",
+          "marketing": "Marketing kukilari: Tegishli reklamalarni ko'rsatish uchun ishlatiladi"
+        }
+      },
+      "usage": {
+        "title": "Kukilardan qanday foydalanamiz",
+        "subtitle": "Biz kukilarni quyidagi maqsadlarda ishlatamiz:",
+        "items": {
+          "authentication": "Autentifikatsiya: Sizning tizimga kirishingizni va xavfsizligingizni ta'minlash uchun",
+          "preferences": "Sozlamalar: Sizning sozlamalaringiz va tanlovlaringizni eslab qolish uchun",
+          "security": "Xavfsizlik: Hisobingizni himoya qilish va firibgarlikni oldini olish uchun",
+          "analytics": "Analitika: Tashrif buyuruvchilar saytimiz bilan qanday o'zaro ta'sir qilishini tushunish uchun"
+        }
+      },
+      "management": {
+        "title": "Kukilarni boshqarish",
+        "content": "Siz bizning veb-saytimizda ishlatiladigan kukilarni boshqarishingiz mumkin. Mana ularni qanday boshqarish mumkin:",
+        "browser": {
+          "title": "Brauzer sozlamalari",
+          "content": "Ko'pgina veb-brauzerlar kukilarni sozlamalar orqali boshqarishga imkon beradi. Siz brauzeringizni kukilarni rad etish yoki ma'lum kukilarni o'chirish uchun sozlashingiz mumkin. Biroq, agar siz kukilarni bloklash yoki o'chirishni tanlasangiz, veb-saytimizning ba'zi funksiyalari to'g'ri ishlamasligi mumkin."
+        },
+        "third-party": {
+          "title": "Uchinchi tomon kukilari",
+          "content": "Ba'zi kukilar bizning sahifalarimizda paydo bo'ladigan uchinchi tomon xizmatlari tomonidan joylashtiriladi. Biz bu kukilarning ishlatilishini nazorat qila olmaymiz va ularga kirish imkoniyatiga egamiz, chunki kukilarga faqat ularni dastlab o'rnatgan tomon kirishi mumkin."
+        }
+      }
+    }
+  },
+  "terms": {
+    "title": "Shartlar va shartlar",
+    "sections": {
+      "agreement": {
+        "title": "1. Shartlarga rozilik",
+        "content": "Ushbu veb-saytdan foydalanish orqali siz ushbu shartnomaning shartlari va qoidalariga rioya qilishni qabul qilasiz va ularga bo'ysunasiz."
+      },
+      "license": {
+        "title": "2. Foydalanish litsenziyasi",
+        "content": "Ruxsat bizning veb-saytimizdagi materiallarga (ma'lumot yoki dasturiy ta'minot) shaxsiy, tijoriy bo'lmagan vaqtinchalik ko'rish uchun beriladi.",
+        "subtitle": "Bu litsenziya berish, mulk huquqini o'tkazish emas, va ushbu litsenziya bo'yicha siz quyidagilarni qila olmaysiz:",
+        "items": {
+          "modify": "Materiallarni o'zgartirish yoki nusxa ko'chirish",
+          "commercial": "Materiallarni tijoriy maqsadlarda ishlatish",
+          "reverse": "Veb-saytda joylashgan har qanday dasturiy ta'minotni dekompilyatsiya qilish yoki teskari muhandislik qilishga harakat qilish",
+          "copyright": "Materiallardan mualliflik huquqi yoki boshqa mulk belgilarini olib tashlash"
+        }
+      },
+      "account": {
+        "title": "3. Foydalanuvchi hisobi",
+        "content": "Agar siz veb-saytda hisob yaratasiz, siz o'z hisobingizning xavfsizligini ta'minlash uchun mas'ulsiz va ushbu hisob ostida sodir bo'ladigan barcha harakatlar uchun to'liq javobgarsiz.",
+        "items": {
+          "security": "Hisobingiz va parolingizning xavfsizligini ta'minlash",
+          "accuracy": "Hisob yaratishda aniq va to'liq ma'lumot berish",
+          "notify": "Hisobingizning ruxsatsiz ishlatilishi haqida bizni darhol xabardor qilish"
+        }
+      },
+      "disclaimer": {
+        "title": "4. Mas'uliyatdan voz kechish",
+        "content": "Bizning veb-saytimizdagi materiallar 'boricha' asosida taqdim etiladi. Biz hech qanday kafolat bermaymiz, ochiq yoki nazarda tutilgan, va shu orqali barcha boshqa kafolatlardan voz kechamiz, shu jumladan, cheklovsiz, nazarda tutilgan kafolatlar yoki savdo qobiliyati, ma'lum bir maqsad uchun moslik yoki intellektual mulk huquqini buzmaslik shartlari."
+      },
+      "limitations": {
+        "title": "5. Cheklovlar",
+        "content": "Hech qanday holatda biz yoki bizning yetkazib beruvchilarimiz veb-saytimizdagi materiallardan foydalanish yoki foydalana olmaslik natijasida yuzaga keladigan har qanday zarar uchun (shu jumladan, cheklovsiz, ma'lumot yoki foydani yo'qotish uchun zarar, yoki biznesning to'xtab qolishi tufayli) javobgar emas."
+      },
+      "revisions": {
+        "title": "6. Qayta ko'rib chiqish va xatolar",
+        "content": "Bizning veb-saytimizda paydo bo'ladigan materiallar texnik, tipografik yoki fotografik xatolarni o'z ichiga olishi mumkin. Biz veb-saytimizdagi har qanday materiallar aniq, to'liq yoki zamonaviy ekanligini kafolatlamaymiz."
+      },
+      "links": {
+        "title": "7. Havolalar",
+        "content": "Biz veb-saytimizga bog'langan barcha saytlarni ko'rib chiqmaganmiz va bunday bog'langan saytning mazmuni uchun javobgar emasmiz. Har qanday havolani kiritish bizning saytni ma'qullashimizni anglatmaydi."
+      },
+      "modifications": {
+        "title": "8. O'zgartirishlar",
+        "content": "Biz veb-saytimiz uchun ushbu xizmat shartlarini oldindan ogohlantirmasdan istalgan vaqtda qayta ko'rib chiqishimiz mumkin. Ushbu veb-saytdan foydalanish orqali siz ushbu xizmat shartlarining o'sha paytdagi versiyasiga bo'ysunishni qabul qilasiz."
+      },
+      "law": {
+        "title": "9. Qo'llaniladigan qonun",
+        "content": "Ushbu shartlar va qoidalar qonunlar bilan tartibga solingan va talqin qilingan va siz o'sha joydagi sudlarning eksklyuziv yurisdiktsiyasiga qayta tiklanmasdan bo'ysunasiz."
       }
     }
   }

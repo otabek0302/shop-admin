@@ -79,7 +79,9 @@ export async function POST(req: NextRequest) {
     }
     try {
         const body = await req.json();
-        const { items, status = OrderStatus.PENDING } = body;
+        console.log("[ORDER_POST] Request body:", body);
+        
+        const { items, status = OrderStatus.PENDING, discount = 0 } = body;
 
         if (!items || !Array.isArray(items) || items.length === 0) {
             return NextResponse.json({ error: "Items are required" }, { status: 400 });
@@ -102,10 +104,10 @@ export async function POST(req: NextRequest) {
             }
         }
 
-        let total = 0;
+        let subtotal = 0;
         const orderItems = items.map((item: { productId: string; quantity: number; price: number }) => {
             const itemTotal = item.quantity * item.price;
-            total += itemTotal;
+            subtotal += itemTotal;
             return {
                 productId: item.productId,
                 quantity: item.quantity,
@@ -114,44 +116,70 @@ export async function POST(req: NextRequest) {
             };
         });
 
+        // Calculate final total after discount
+        const total = Math.max(0, subtotal - discount);
+
+        console.log("[ORDER_POST] Calculated values:", {
+            subtotal,
+            discount,
+            total,
+            orderItems
+        });
+
         // Create order and update stock in a transaction
         const order = await prisma.$transaction(async (tx) => {
-            // Create the order
-            const newOrder = await tx.order.create({
-                data: {
-                    status,
-                    total,
-                    orderItems: {
-                        create: orderItems,
-                    },
-                },
-                include: {
-                    orderItems: {
-                        include: {
-                            product: true,
+            try {
+                // Create the order
+                const newOrder = await tx.order.create({
+                    data: {
+                        status,
+                        total,
+                        discount,
+                        orderItems: {
+                            create: orderItems,
                         },
                     },
-                },
-            });
-
-            // Update stock for each product
-            for (const item of items) {
-                await tx.product.update({
-                    where: { id: item.productId },
-                    data: {
-                        stock: {
-                            decrement: item.quantity
-                        }
-                    }
+                    include: {
+                        orderItems: {
+                            include: {
+                                product: true,
+                            },
+                        },
+                    },
                 });
-            }
 
-            return newOrder;
+                // Update stock for each product
+                for (const item of items) {
+                    await tx.product.update({
+                        where: { id: item.productId },
+                        data: {
+                            stock: {
+                                decrement: item.quantity
+                            }
+                        }
+                    });
+                }
+
+                return newOrder;
+            } catch (error) {
+                console.error("[ORDER_POST_TRANSACTION_ERROR]", error);
+                throw error;
+            }
         });
 
         return NextResponse.json(order);
     } catch (error) {
         console.error("[ORDER_POST]", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        if (error instanceof Error) {
+            console.error("[ORDER_POST] Error details:", {
+                message: error.message,
+                stack: error.stack,
+                name: error.name
+            });
+        }
+        return NextResponse.json({ 
+            error: "Internal Server Error",
+            details: error instanceof Error ? error.message : "Unknown error"
+        }, { status: 500 });
     }
 }

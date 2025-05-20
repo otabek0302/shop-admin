@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
         orderBy: { createdAt: "desc" },
         skip: (page - 1) * pageSize,
         take: pageSize,
-        include: { 
+        include: {
             category: true,
             orderItems: {
                 where: {
@@ -57,15 +57,18 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
 
-        const imageData = await uploadImage(body.imageBase64);
+        let imageData = null;
+        if (body.imageBase64) {
+            imageData = await uploadImage(body.imageBase64);
+        }
 
         const product = await prisma.product.create({
             data: {
                 name: body.name,
                 description: body.description,
                 brand: body.brand,
-                price: body.price,
-                stock: body.stock,
+                price: parseFloat(body.price),
+                stock: parseInt(body.stock),
                 category: {
                     connect: { id: body.category },
                 },
@@ -76,6 +79,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(product, { status: 200 });
     } catch (error) {
         console.error("[PRODUCT_POST_ERROR]", error);
-        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to create product" }, { status: 500 });
     }
 }

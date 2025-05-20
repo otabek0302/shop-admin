@@ -7,22 +7,15 @@ import Summary from '@/components/client-ui/summary';
 import Loading from './loading';
 
 import { useSession } from 'next-auth/react';
-import { useProductStore } from '@/store/product-store';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-
+import { ProductToolbar } from '@/components/client-ui/product-toolbar';
 
 export default function Home() {
   const router = useRouter();
-  
+
   const { status } = useSession();
-  const { loading, fetchProducts } = useProductStore();
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  if (status === 'loading' || loading) return <Loading />;
+  if (status === 'loading') return <Loading />;
   if (status === 'unauthenticated') router.push('/login');
 
   return (
@@ -33,11 +26,12 @@ export default function Home() {
 
       <section className="flex-1 py-10">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="flex h-[calc(100vh-215px)] flex-col gap-4 md:flex-row">
-            <div className="max-w-full flex-1">
+          <div className="flex h-full flex-col gap-4 lg:h-[calc(100vh-215px)] lg:flex-row">
+            <div className="w-full h-full flex-1 lg:max-w-full overflow-y-auto no-scrollbar">
+              <ProductToolbar />
               <ProductList />
             </div>
-            <div className="max-w-md flex-1">
+            <div className="w-full h-full flex-1 lg:max-w-md overflow-y-auto no-scrollbar">
               <Summary />
             </div>
           </div>

@@ -22,12 +22,14 @@ interface OrderFormData {
   orderItems: OrderItem[];
   total: number;
   status: OrderStatus;
+  discount: number;
 }
 
 const createEmptyOrder = (): OrderFormData => ({
   orderItems: [],
   total: 0,
   status: OrderStatus.PENDING,
+  discount: 0,
 });
 
 const OrderModal = () => {
@@ -38,6 +40,7 @@ const OrderModal = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [formData, setFormData] = useState<OrderFormData>(createEmptyOrder());
+  const [discountAmount, setDiscountAmount] = useState('');
 
   useEffect(() => {
     if (open) {
@@ -58,6 +61,7 @@ const OrderModal = () => {
         orderItems: editData.orderItems,
         total: editData.total,
         status: editData.status,
+        discount: editData.discount,
       });
     } else {
       setFormData(createEmptyOrder());
@@ -65,9 +69,10 @@ const OrderModal = () => {
   }, [editData]);
 
   useEffect(() => {
-    const total = formData.orderItems.reduce((sum, item) => sum + item.total, 0);
-    setFormData((prev) => ({ ...prev, total }));
-  }, [formData.orderItems]);
+    const subtotal = formData.orderItems.reduce((sum, item) => sum + item.total, 0);
+    const total = subtotal - formData.discount;
+    setFormData((prev) => ({ ...prev, total: Math.max(0, total) }));
+  }, [formData.orderItems, formData.discount]);
 
   const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -129,6 +134,14 @@ const OrderModal = () => {
     });
   };
 
+  const handleApplyDiscount = () => {
+    const amount = parseFloat(discountAmount);
+    if (!isNaN(amount) && amount >= 0) {
+      setFormData((prev) => ({ ...prev, discount: amount }));
+      setDiscountAmount('');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.orderItems?.length) {
@@ -144,6 +157,7 @@ const OrderModal = () => {
           price: item.price,
         })),
         status: formData.status,
+        discount: formData.discount,
       };
 
       if (editData) {
@@ -156,8 +170,8 @@ const OrderModal = () => {
       setOpen(false);
       setEditData(null);
     } catch (err) {
-        console.error('[ORDER_MODAL_ERROR]', err);
-        toast.error(t('messages.error.order.order-save-failed'));
+      console.error('[ORDER_MODAL_ERROR]', err);
+      toast.error(t('messages.error.order.order-save-failed'));
     }
   };
 
@@ -168,20 +182,12 @@ const OrderModal = () => {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="overflow-hidden p-4 sm:max-w-[786px]">
+      <DialogContent className="no-scrollbar h-[95vh] w-full max-w-md overflow-y-auto sm:max-w-5xl sm:rounded-lg">
         <DialogHeader>
-          <DialogTitle>
-            {editData 
-              ? t('components.admin-ui.order.order-modal.edit-title', 'Edit Order')
-              : t('components.admin-ui.order.order-modal.create-title', 'Create New Order')}
-          </DialogTitle>
-          <DialogDescription>
-            {editData
-              ? t('components.admin-ui.order.order-modal.edit-description', 'Modify the order details below')
-              : t('components.admin-ui.order.order-modal.create-description', 'Add products to create a new order')}
-          </DialogDescription>
+          <DialogTitle>{editData ? t('components.admin-ui.order.order-modal.edit-title', 'Edit Order') : t('components.admin-ui.order.order-modal.create-title', 'Create New Order')}</DialogTitle>
+          <DialogDescription>{editData ? t('components.admin-ui.order.order-modal.edit-description', 'Modify the order details below') : t('components.admin-ui.order.order-modal.create-description', 'Add products to create a new order')}</DialogDescription>
         </DialogHeader>
-        <div className="flex h-[70vh] w-full flex-col md:flex-row">
+        <div className="flex h-[480px] w-full flex-col md:flex-row">
           {/* Left Panel - Product Selection */}
           <div className="flex h-full max-w-1/2 flex-1 flex-col p-4">
             <div className="mb-6 flex items-center justify-between">
@@ -199,8 +205,8 @@ const OrderModal = () => {
               <Input placeholder={t('components.admin-ui.order.order-modal.search-products')} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="bg-background h-11 pl-9" />
             </div>
 
-            <ScrollArea className="h-[calc(100%-8rem)] flex-1">
-              <div className="grid grid-cols-1 gap-4 pr-4">
+            <ScrollArea className="no-scrollbar h-[calc(100%-8rem)] flex-1">
+              <div className="grid grid-cols-1 gap-4 px-2">
                 {filteredProducts.map((product) => (
                   <ProductCard key={product.id} product={product} onClick={() => handleAddOrderItem(product)} />
                 ))}
@@ -208,7 +214,7 @@ const OrderModal = () => {
             </ScrollArea>
           </div>
 
-          <Divider orientation="vertical" />
+          <Divider orientation="vertical" className="h-full" />
 
           {/* Right Panel - Order Items */}
           <div className="flex h-full max-w-1/2 flex-1 flex-col p-4">
@@ -222,8 +228,8 @@ const OrderModal = () => {
               </Badge>
             </div>
 
-            <ScrollArea className="h-[calc(100%-8rem)] flex-1">
-              <div className="space-y-4 pr-4">
+            <ScrollArea className="no-scrollbar h-[calc(100%-8rem)] flex-1">
+              <div className="space-y-4 px-2">
                 {formData.orderItems?.map((item, index) => {
                   const product = products.find((p) => p.id === item.productId);
                   return <OrderItemCard key={index} item={item} index={index} updateOrderItem={handleUpdateOrderItem} removeOrderItem={handleRemoveOrderItem} availableStock={product?.stock || 0} />;
@@ -234,14 +240,40 @@ const OrderModal = () => {
         </div>
 
         {/* Footer */}
-        <div className="border-t p-4">
-          <div className="mb-6 flex items-center justify-end">
-            <div className="text-right">
-              <div className="text-muted-foreground text-sm">{t('components.admin-ui.order.order-modal.total-amount')}</div>
-              <div className="text-primary flex items-center gap-1 text-3xl font-bold">₹{formData.total?.toFixed(2)}</div>
+        <div className="border-t px-4 py-2">
+          {/* Discount input section */}
+          <div className="mb-6">
+            <label htmlFor="discount-amount" className="mb-1 block text-sm font-medium">
+              {t('components.summary.discount-amount')}
+            </label>
+            <div className="flex">
+              <Input id="discount-amount" type="text" min="0" step="0.01" value={discountAmount} onChange={(e) => setDiscountAmount(e.target.value)} placeholder={t('components.summary.discount-amount')} className="rounded-r-none border-none outline-none focus:ring-0 focus:outline-none" />
+              <Button className="rounded-l-none" onClick={handleApplyDiscount} type="button">
+                {t('components.summary.apply-discount')}
+              </Button>
+            </div>
+            {formData.discount > 0 && <p className="mt-1 flex items-center gap-1 text-sm text-green-600">{t('components.summary.discount-applied', { discount: formData.discount.toLocaleString() })}</p>}
+          </div>
+
+          {/* Summary pricing */}
+          <div className="mb-6 space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span>{t('components.summary.subtotal')}</span>
+              <span className="flex items-center gap-1">{formData.orderItems.reduce((sum, item) => sum + item.total, 0).toLocaleString()}</span>
+            </div>
+            {formData.discount > 0 && (
+              <div className="flex justify-between text-green-600">
+                <span>{t('components.summary.discount')}</span>
+                <span className="flex items-center gap-1">{formData.discount.toLocaleString()}</span>
+              </div>
+            )}
+            <div className="flex justify-between border-t pt-2 text-lg font-bold">
+              <span>{t('components.summary.total')}</span>
+              <span className="flex items-center gap-1">{formData.total?.toLocaleString()}</span>
             </div>
           </div>
 
+          {/* Action buttons */}
           <div className="flex justify-end gap-3">
             <Button
               type="button"

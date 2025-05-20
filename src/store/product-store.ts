@@ -51,29 +51,44 @@ export const useProductStore = create<ProductState>((set, get) => ({
             get().setDeleteData(null);
         }
     },
-    editProduct: async (id: string, data) => {
-        const res = await fetch(`/api/products/${id}`, { 
-            method: "PATCH", 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data) 
-        });
-        if (res.ok) {
-            get().fetchProducts();
-            get().setEditData(null);
+    editProduct: async (id, data) => {
+        set({ loading: true });
+        try {
+            const res = await fetch(`/api/products/${id}`, {
+                method: "PATCH",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                await get().fetchProducts();
+                get().setEditData(null);
+            }
+        } catch (error) {
+            console.error("[EDIT_PRODUCT_ERROR]", error);
+        } finally {
+            set({ loading: false });
         }
     },
     createProduct: async (data) => {
-        const res = await fetch(`/api/products`, { 
-            method: "POST", 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data) 
-        });
-        if (res.ok) {
-            get().fetchProducts();
+        set({ loading: true });
+        try {
+            const res = await fetch(`/api/products`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.error || 'Failed to create product');
+            }
+
+            await get().fetchProducts();
+        } catch (error) {
+            console.error("[CREATE_PRODUCT_ERROR]", error);
+            throw error;
+        } finally {
+            set({ loading: false });
         }
-    },
+    }
 }));
