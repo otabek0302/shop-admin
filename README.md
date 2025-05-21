@@ -2,6 +2,57 @@
 
 A modern and scalable admin panel for managing products and orders, built with Next.js, TypeScript, Prisma ORM, and Tailwind CSS.
 
+## 🚀 Quick Start
+
+### Step 1: Clone the repository
+```bash
+git clone https://github.com/otabek0302/shop-admin.git
+cd shop-admin
+```
+
+### Step 2: Create `.env` file
+Create a `.env` file in the root directory and add:
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/shop_admin?schema=public"
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="http://localhost:3000"
+```
+
+### Step 3: Install dependencies
+```bash
+npm install
+```
+
+### Step 4: Setup database
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
+
+### Step 5: Start the development server
+```bash
+npm run dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to see the application.
+
+## 🔑 Default Login Credentials
+
+- **Admin**: admin@example.com / admin123
+- **User**: user@example.com / user123
+
+## 🧱 Tech Stack
+
+| Technology    | Description                              |
+|--------------|------------------------------------------|
+| Next.js      | React framework for server-side rendering |
+| TypeScript   | Type-safe JavaScript                      |
+| Prisma       | Next-gen ORM for database operations     |
+| PostgreSQL   | Production-ready database                 |
+| Tailwind CSS | Utility-first CSS framework              |
+| NextAuth.js  | Authentication and authorization          |
+| Zod          | Schema validation                        |
+
 ## 🚀 Features
 
 - 🧑‍💼 **User & Role Management**
@@ -27,66 +78,6 @@ A modern and scalable admin panel for managing products and orders, built with N
   - Product performance metrics
   - Revenue tracking
 
-- 🔒 **Security**
-  - Secure authentication
-  - Role-based permissions
-  - API route protection
-  - Data validation
-
-## 🧱 Tech Stack
-
-| Technology    | Description                              |
-|--------------|------------------------------------------|
-| Next.js      | React framework for server-side rendering |
-| TypeScript   | Type-safe JavaScript                      |
-| Prisma       | Next-gen ORM for database operations     |
-| PostgreSQL   | Production-ready database                 |
-| Tailwind CSS | Utility-first CSS framework              |
-| NextAuth.js  | Authentication and authorization          |
-| Zod          | Schema validation                        |
-
-## 🛠️ Setup Instructions
-
-### Prerequisites
-- Node.js 18+ and npm
-- PostgreSQL database
-- Git
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/otabek0302/shop-admin.git
-cd shop-admin
-```
-
-### 2. Install Dependencies
-```bash
-npm install
-```
-
-### 3. Environment Setup
-Create a `.env` file in the root directory with the following variables:
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/shop_admin?schema=public"
-NEXTAUTH_SECRET="your-secret-key"
-NEXTAUTH_URL="http://localhost:3000"
-```
-
-### 4. Database Setup
-```bash
-# Generate Prisma client
-npx prisma generate
-
-# Run database migrations
-npx prisma migrate dev
-```
-
-### 5. Start Development Server
-```bash
-npm run dev
-```
-
-Visit [http://localhost:3000](http://localhost:3000) to see the application.
-
 ## 📁 Project Structure
 
 ```
@@ -101,23 +92,6 @@ src/
 ├── prisma/           # Database schema
 └── styles/           # Global styles
 ```
-
-## 🧪 Available Scripts
-
-| Command           | Description                          |
-|------------------|--------------------------------------|
-| `npm run dev`    | Start development server             |
-| `npm run build`  | Build for production                 |
-| `npm run start`  | Start production server              |
-| `npm run lint`   | Run ESLint                          |
-| `prisma studio`  | Open Prisma Studio (DB GUI)         |
-| `prisma migrate` | Run database migrations              |
-
-## 🔐 Authentication
-
-The application uses NextAuth.js for authentication. Default credentials:
-- Admin: admin@example.com / admin123
-- User: user@example.com / user123
 
 ## 📝 API Documentation
 
