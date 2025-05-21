@@ -13,7 +13,7 @@ export const ProductToolbar = () => {
   };
 
   return (
-    <div className="py-4">
+    <div className="pb-4">
       <Input placeholder={t('components.admin-ui.product.product-toolbar.search')} value={search} onChange={handleFilterChange} className="h-10" />
     </div>
   );

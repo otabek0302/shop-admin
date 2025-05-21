@@ -209,7 +209,7 @@ const SettingsPage = () => {
               <div className="flex justify-end">
                 <Button
                   type="submit"
-                  className="bg-primary text-white hover:bg-primary/90"
+                  className="bg-primary text-white hover:bg-primary/90 dark:bg-gray-800 dark:text-white cursor-pointer"
                   disabled={isUpdatingPassword}
                 >
                   {isUpdatingPassword ? t("components.admin-ui.profile.profile-page.change-password.updating") : t("components.admin-ui.profile.profile-page.change-password.update-password")}

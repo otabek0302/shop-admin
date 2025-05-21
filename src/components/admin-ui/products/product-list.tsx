@@ -9,6 +9,7 @@ import { useProductStore } from '@/store/product-store';
 import { useConfirmStore } from '@/store/confirm-store';
 import { useTranslation } from 'react-i18next';
 import { useModalStore } from '@/store/modal-store';
+import { toast } from 'sonner';
 
 const ProductList = () => {
   const { t } = useTranslation();
@@ -17,9 +18,20 @@ const ProductList = () => {
   const { products, deleteData, deleteProduct, loading } = useProductStore();
   const { closeConfirm } = useConfirmStore();
 
-  const confirmDelete = async () => {
-    await deleteProduct(deleteData?.id ?? '');
-    closeConfirm();
+  const handleDelete = async () => {
+    if (!deleteData) return;
+
+    try {
+      await deleteProduct(deleteData.id);
+      toast.success('Product deleted successfully');
+      closeConfirm();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error('Failed to delete product');
+      }
+    }
   };
 
   const LoadingSkeleton = () => (
@@ -61,10 +73,7 @@ const ProductList = () => {
   return (
     <div className="mt-4 h-full">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
-        {loading &&
-          Array(3)
-            .fill(0)
-            .map((_, index) => <LoadingSkeleton key={index} />)}
+        {loading && Array(3).fill(0).map((_, index) => <LoadingSkeleton key={index} />)}
         {!loading && products.length === 0 && (
           <div className="text-muted-foreground col-span-full flex flex-col items-center justify-center rounded-lg border px-10 py-20 text-center">
             <span className="text-lg font-semibold">{t('components.admin-ui.product.product-list.no-products')}</span>
@@ -74,7 +83,7 @@ const ProductList = () => {
         {!loading && products.length > 0 && products.map((product, index) => <ProductCard key={index} product={product} />)}
       </div>
 
-      <ConfirmDialog message="Are you sure you want to delete this product?" title="Delete Product" action="Delete" onConfirm={confirmDelete} />
+      <ConfirmDialog message={t('components.admin-ui.product.product-list.delete.message')} title={t('components.admin-ui.product.product-list.delete.title')} action={t('components.admin-ui.product.product-list.delete.action')} cancel={t('components.admin-ui.product.product-list.delete.cancel')} onConfirm={handleDelete} />
       {open && <ProductModal />}
     </div>
   );

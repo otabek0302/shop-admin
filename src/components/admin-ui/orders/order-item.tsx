@@ -12,7 +12,7 @@ import { getImageUrl } from '@/utils/getImageUrl';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTranslation } from 'react-i18next';
-
+import { formatCurrency } from '@/lib/utils';
 interface OrderItemCardProps {
   item: OrderItem;
   index: number;
@@ -60,8 +60,8 @@ export const OrderItemCard = memo(({ item, index, updateOrderItem, removeOrderIt
             )}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-base font-semibold">{item.product.name}</p>
-            <p className="text-muted-foreground mt-1 text-sm">{item.price.toLocaleString()}</p>
+            <p className="text-base font-bold">{item.product.name}</p>
+            <p className="text-muted-foreground mt-1 text-sm">{formatCurrency(item.price)}</p>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -97,7 +97,7 @@ export const OrderItemCard = memo(({ item, index, updateOrderItem, removeOrderIt
         </div>
       </div>
 
-      <div className="text-primary mt-3 text-right text-sm font-medium">Total: {item.total.toLocaleString()}</div>
+      <div className="text-primary mt-3 text-right text-sm font-medium">Total: {formatCurrency(item.total)}</div>
     </Card>
   );
 });

@@ -25,14 +25,14 @@ export default function Counter({ productId, value, max, disabled = false, size 
 
   return (
     <div className="flex items-center">
-      <Button variant="outline" size={size === 'sm' ? 'icon' : 'default'} className={size === 'sm' ? 'h-8 w-8' : 'h-10 w-10'} onClick={handleDecrement} disabled={isMinDisabled || disabled}>
+      <Button variant="outline" size={size === 'sm' ? 'icon' : 'default'} className={size === 'sm' ? 'h-8 w-8 dark:bg-gray-800 dark:text-white cursor-pointer' : 'h-10 w-10 dark:bg-gray-800 dark:text-white cursor-pointer'} onClick={handleDecrement} disabled={isMinDisabled || disabled}>
         <Minus className={size === 'sm' ? 'h-4 w-4' : 'h-5 w-5'} />
         <span className="sr-only">Decrease quantity</span>
       </Button>
 
       <span className={`mx-3 text-center ${size === 'sm' ? 'w-8' : 'w-10'}`}>{value}</span>
 
-      <Button variant="outline" size={size === 'sm' ? 'icon' : 'default'} className={size === 'sm' ? 'h-8 w-8' : 'h-10 w-10'} onClick={handleIncrement} disabled={isMaxDisabled || disabled}>
+      <Button variant="outline" size={size === 'sm' ? 'icon' : 'default'} className={size === 'sm' ? 'h-8 w-8 dark:bg-gray-800 dark:text-white cursor-pointer' : 'h-10 w-10 dark:bg-gray-800 dark:text-white cursor-pointer'} onClick={handleIncrement} disabled={isMaxDisabled || disabled}>
         <Plus className={size === 'sm' ? 'h-4 w-4' : 'h-5 w-5'} />
         <span className="sr-only">Increase quantity</span>
       </Button>

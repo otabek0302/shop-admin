@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
                 name: error.name
             });
         }
-        return NextResponse.json({ 
+        return NextResponse.json({
             error: "Internal Server Error",
             details: error instanceof Error ? error.message : "Unknown error"
         }, { status: 500 });
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         console.log("[ORDER_POST] Request body:", body);
-        
+
         const { items, status = OrderStatus.PENDING, discount = 0 } = body;
 
         if (!items || !Array.isArray(items) || items.length === 0) {
@@ -92,14 +92,14 @@ export async function POST(req: NextRequest) {
             const product = await prisma.product.findUnique({
                 where: { id: item.productId }
             });
-            
+
             if (!product) {
                 return NextResponse.json({ error: `Product ${item.productId} not found` }, { status: 404 });
             }
-            
+
             if (product.stock < item.quantity) {
-                return NextResponse.json({ 
-                    error: `Insufficient stock for ${product.name}. Available: ${product.stock}, Requested: ${item.quantity}` 
+                return NextResponse.json({
+                    error: `Insufficient stock for ${product.name}. Available: ${product.stock}, Requested: ${item.quantity}`
                 }, { status: 400 });
             }
         }
@@ -148,16 +148,18 @@ export async function POST(req: NextRequest) {
                     },
                 });
 
-                // Update stock for each product
-                for (const item of items) {
-                    await tx.product.update({
-                        where: { id: item.productId },
-                        data: {
-                            stock: {
-                                decrement: item.quantity
+                // Only decrement stock if status is COMPLETED
+                if (status === OrderStatus.COMPLETED) {
+                    for (const item of items) {
+                        await tx.product.update({
+                            where: { id: item.productId },
+                            data: {
+                                stock: {
+                                    decrement: item.quantity
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
 
                 return newOrder;
@@ -177,7 +179,7 @@ export async function POST(req: NextRequest) {
                 name: error.name
             });
         }
-        return NextResponse.json({ 
+        return NextResponse.json({
             error: "Internal Server Error",
             details: error instanceof Error ? error.message : "Unknown error"
         }, { status: 500 });

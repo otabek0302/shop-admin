@@ -80,7 +80,7 @@ export function ChartAreaInteractive() {
   if (loading) return null;
 
   return (
-    <Card className="@container/card">
+    <Card className="@container/card w-full h-full">
       <CardHeader className="relative">
         <CardTitle>Sales Overview</CardTitle>
         <CardDescription>

@@ -169,6 +169,7 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
       updatedAt: new Date().toISOString(),
       productId: product.id,
       quantity: 1,
+      discount: 0,
       price: product.price,
       total: product.price,
       product: {

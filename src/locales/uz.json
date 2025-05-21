@@ -79,8 +79,10 @@
         "total-products": "Jami mahsulotlar",
         "products-in-store": "Do'kondagi mahsulotlar",
         "sold-products": "Sotilgan mahsulotlar",
+        "sold-products-gross-value": "Sotilgan mahsulotlarning yalpi qiymati",
         "store-value": "Do'kon qiymati",
         "revenue-in-stock": "Mavjud daromad",
+        "total-discount": "Umumiy chegirma",
         "out-of-stock": "Sotuvda yo'q",
         "out-of-stock-items": "Sotuvda bo'lmagan mahsulotlar",
         "no-out-of-stock": "Sotuvda bo'lmagan mahsulotlar yo'q",
@@ -149,7 +151,13 @@
         },
         "product-list": {
           "no-products": "Mahsulotlar topilmadi",
-          "try-adjusting-filters": "Filtrlarni o'zgartirish yoki yangi mahsulot qo'shishni sinab ko'ring."
+          "try-adjusting-filters": "Filtrlarni o'zgartirish yoki yangi mahsulot qo'shishni sinab ko'ring.",
+          "delete": {
+            "title": "Mahsulotni o'chirish",
+            "message": "Bu mahsulotni o'chirishni xohlaysizmi? Bu amalni bekor qilib bo'lmaydi.",
+            "action": "O'chirish",
+            "cancel": "Bekor qilish"
+          }
         }
       },
       "order": {
@@ -177,6 +185,12 @@
           "messages": {
             "no-orders": "Buyurtmalar topilmadi",
             "try-adjusting-filters": "Filtrlarni o'zgartirish yoki yangi buyurtma qo'shishni sinab ko'ring."
+          },
+          "delete": {
+            "title": "Buyurtmani o'chirish",
+            "message": "Bu buyurtmani o'chirishni xohlaysizmi? Bu amalni bekor qilib bo'lmaydi.",
+            "action": "O'chirish",
+            "cancel": "Bekor qilish"
           }
         },
         "order-item": {
@@ -225,6 +239,12 @@
           "messages": {
             "no-categories": "Kategoriyalar topilmadi",
             "try-adjusting-filters": "Filtrlarni o'zgartiring yoki yangi kategoriya qo'shing."
+          },
+          "delete": {
+            "title": "Kategoriyani o'chirish",
+            "message": "Bu kategoriyani o'chirishni xohlaysizmi? Bu amalni bekor qilib bo'lmaydi.",
+            "action": "O'chirish",
+            "cancel": "Bekor qilish"
           }
         },
         "category-modal": {
@@ -257,6 +277,12 @@
           "messages": {
             "no-users": "Foydalanuvchilar topilmadi",
             "try-adjusting-filters": "Filtrlarni o'zgartiring yoki yangi foydalanuvchi qo'shing."
+          },
+          "delete": {
+            "title": "Foydalanuvchini o'chirish",
+            "message": "Bu foydalanuvchini o'chirishni xohlaysizmi? Bu amalni bekor qilib bo'lmaydi.",
+            "action": "O'chirish",
+            "cancel": "Bekor qilish"
           }
         },
         "user-modal": {

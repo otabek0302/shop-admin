@@ -137,18 +137,25 @@ const ProductModal = () => {
     }
   };
 
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      setEditData(null);
+      setImage(null);
+      setError(null);
+    }
+    setOpen(isOpen);
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+    setEditData(null);
+    setImage(null);
+    setError(null);
+  };
+
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(isOpen) => {
-        if (!isOpen) {
-          setEditData(null);
-          setImage(null);
-          setError(null);
-        }
-        setOpen(isOpen);
-      }}>
-      <DialogContent className="w-full max-w-md sm:max-w-xl h-[95vh] overflow-y-auto sm:rounded-lg no-scrollbar">
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogContent className="no-scrollbar w-[95vw] h-[95vh] max-w-md overflow-y-auto sm:max-w-xl sm:rounded-lg">
         <DialogTitle>{editData ? t('components.admin-ui.product.product-modal.edit-title') : t('components.admin-ui.product.product-modal.add-title')}</DialogTitle>
         <DialogDescription>{editData ? t('components.admin-ui.product.product-modal.edit-description') : t('components.admin-ui.product.product-modal.add-description')}</DialogDescription>
 
@@ -185,19 +192,10 @@ const ProductModal = () => {
           </div>
 
           <div className="flex justify-end gap-2 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              disabled={loading}
-              onClick={() => {
-                setOpen(false);
-                setEditData(null);
-                setImage(null);
-                setError(null);
-              }}>
+            <Button type="button" variant="outline" className="cursor-pointer" disabled={loading} onClick={handleCancel}>
               {t('components.admin-ui.product.product-modal.cancel')}
             </Button>
-            <Button disabled={loading} className={`relative ${loading ? 'opacity-70' : ''}`} type="submit">
+            <Button disabled={loading} className={`relative cursor-pointer dark:bg-gray-800 dark:text-white ${loading ? 'opacity-70' : ''}`} type="submit">
               {loading && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />

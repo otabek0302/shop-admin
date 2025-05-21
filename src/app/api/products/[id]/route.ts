@@ -67,11 +67,30 @@ export async function DELETE(_: NextRequest, { params }: { params: { id: string 
     try {
         const existing = await prisma.product.findUnique({
             where: { id: params.id },
+            include: {
+                orderItems: {
+                    where: {
+                        order: {
+                            status: {
+                                not: "CANCELLED"
+                            }
+                        }
+                    }
+                }
+            }
         });
 
         if (!existing) {
             return NextResponse.json({ error: "Product not found" }, { status: 404 });
         }
+
+        // Check if product has associated active orders
+        if (existing.orderItems.length > 0) {
+            return NextResponse.json({ 
+                error: "Cannot delete product because it has associated active orders. Please cancel or complete these orders first." 
+            }, { status: 400 });
+        }
+
         // Remove image from Cloudinary
         if (existing.image && typeof existing.image === 'object' && 'public_id' in existing.image) {
             const publicId = existing.image.public_id;

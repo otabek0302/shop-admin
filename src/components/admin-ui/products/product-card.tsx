@@ -11,6 +11,7 @@ import { useProductStore } from '@/store/product-store';
 import { useModalStore } from '@/store/modal-store';
 import { useConfirmStore } from '@/store/confirm-store';
 import { useTranslation } from 'react-i18next';
+import { formatCurrency } from '@/lib/utils';
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { t } = useTranslation();
@@ -32,8 +33,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Card className="w-full space-y-4 overflow-hidden rounded-xl p-4 shadow-sm">
-      <div className="flex items-start justify-between">
-        <div className="flex gap-4">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex-1 flex gap-4">
           <div className="border-border relative h-32 w-32 overflow-hidden rounded-md border">
             <Image 
               src={product?.image?.url} 
@@ -44,14 +45,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
               className="object-cover object-center" 
             />
           </div>
-          <div className="flex flex-col justify-center space-y-2">
-            <h2 className="text-xl font-bold">{product?.name}</h2>
+          <div className="flex-1 flex flex-col justify-center space-y-2">
+            <h2 className="text-base font-bold">{product?.name}</h2>
             <p className="text-sm font-normal">{typeof product?.category === 'object' ? product?.category?.name : product?.category}</p>
-            <p className="text-sm font-normal">{product?.price.toFixed(2)}</p>
+            <p className="text-sm font-normal">{formatCurrency(product?.price)}</p>
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col md:flex-row items-center gap-2">
           <Button variant="outline" size="icon" className="cursor-pointer rounded-full" onClick={() => handleClick('edit')}>
             <Pencil className="text-muted-foreground h-5 w-5" />
           </Button>
@@ -75,7 +76,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
       <CardContent className="border-border space-y-2 rounded-lg border px-4 py-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-gray-700">{t('components.admin-ui.product.product-card.sales')}</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-muted-foreground">{t('components.admin-ui.product.product-card.sales')}</span>
           <span className="flex items-center gap-1 font-semibold text-orange-500">
             <ArrowUpRight className="h-4 w-4" />
             {product?.sales}
@@ -83,7 +84,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
         <hr />
         <div className="flex items-center justify-between gap-10">
-          <span className="w-full text-sm font-medium text-gray-700">{t('components.admin-ui.product.product-card.remaining-products')}</span>
+          <span className="w-full text-sm font-medium text-gray-700 dark:text-muted-foreground">{t('components.admin-ui.product.product-card.remaining-products')}</span>
           <Progress value={product?.stock >= 100 ? 100 : product?.stock} className="h-2" />
           <span className="text-muted-foreground text-sm">{product?.stock}</span>
         </div>

@@ -45,10 +45,23 @@ export const useProductStore = create<ProductState>((set, get) => ({
         }
     },
     deleteProduct: async (id: string) => {
-        const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
-        if (res.ok) {
-            get().fetchProducts();
+        try {
+            const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+            const data = await res.json();
+            
+            if (!res.ok) {
+                if (res.status === 400) {
+                    // This is the case where product has active orders
+                    throw new Error(data.error);
+                }
+                throw new Error('Failed to delete product');
+            }
+            
+            await get().fetchProducts();
             get().setDeleteData(null);
+        } catch (error) {
+            console.error("[DELETE_PRODUCT_ERROR]", error);
+            throw error;
         }
     },
     editProduct: async (id, data) => {

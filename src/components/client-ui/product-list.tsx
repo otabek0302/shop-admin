@@ -31,7 +31,7 @@ export default function ProductList() {
 
   return (
     <div className="h-full w-full space-y-6">
-      <div className="space-y-6 md:pr-2 h-screen md:h-full overflow-y-auto no-scrollbar">
+      <div className="space-y-6 h-screen md:h-full overflow-y-auto no-scrollbar">
         {loading && (
           <>
             <LoadingSkeleton />

@@ -43,7 +43,7 @@ const Summary = () => {
   };
 
   return (
-    <div className="rounded-lg border bg-white p-6">
+    <div className="rounded-lg border p-6 bg-background">
       <h2 className="mb-4 text-xl font-semibold">{t('components.summary.title')}</h2>
 
       {cartItems.length === 0 ? (
@@ -68,17 +68,17 @@ const Summary = () => {
                   </div>
 
                   {/* Product name + stock */}
-                  <div className="flex flex-grow flex-col justify-between">
+                  <div className="flex flex-grow flex-col justify-center">
                     <div>
                       <h4 className="text-sm font-medium">{product.name}</h4>
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
-                            <Badge variant={stockStatus.variant} className="mt-1">
+                            <Badge variant={stockStatus.variant} className="mt-1 cursor-pointer p-2 py-1.5 text-xs outline-none dark:bg-gray-800 dark:text-white">
                               {stockStatus.message}
                             </Badge>
                           </TooltipTrigger>
-                          <TooltipContent>{stockStatus.message === 'Out of Stock' ? 'No more stock available for this product' : stockStatus.message.includes('Low Stock') ? 'Running low on stock. Consider ordering soon!' : 'Product is available in stock'}</TooltipContent>
+                          <TooltipContent className="dark:text-white">{stockStatus.message === 'Out of Stock' ? 'No more stock available for this product' : stockStatus.message.includes('Low Stock') ? 'Running low on stock. Consider ordering soon!' : 'Product is available in stock'}</TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
                     </div>
@@ -98,11 +98,11 @@ const Summary = () => {
           </div>
 
           {/* Discount input */}
-          <div className="mb-6">
+          <div className="mb-6 space-y-2">
             <Label htmlFor="discount-amount">{t('components.summary.discount-amount')}</Label>
             <div className="mt-1 flex">
-              <Input id="discount-amount" type="number" min="0" step="0.01" value={discountAmount} onChange={(e) => setDiscountAmount(e.target.value)} placeholder={t('components.summary.discount-amount')} className="rounded-r-none" />
-              <Button className="rounded-l-none" onClick={handleApplyDiscount}>
+              <Input id="discount-amount" type="text" min="0" step="0.01" value={discountAmount} onChange={(e) => setDiscountAmount(e.target.value)} placeholder={t('components.summary.discount-amount')} className="rounded-r-none focus-visible:ring-0 border-none outline-none" />
+              <Button className="rounded-l-none dark:bg-gray-800 dark:text-white cursor-pointer" onClick={handleApplyDiscount}>
                 {t('components.summary.apply-discount')}
               </Button>
             </div>
@@ -128,7 +128,7 @@ const Summary = () => {
           </div>
 
           {/* Order button */}
-          <Button className="mt-6 w-full" size="lg" onClick={handleCreateOrder} disabled={cartItems.length === 0}>
+          <Button className="mt-6 w-full dark:bg-gray-800 dark:text-white cursor-pointer" size="lg" onClick={handleCreateOrder} disabled={cartItems.length === 0}>
             {t('components.summary.create-order')}
           </Button>
         </>

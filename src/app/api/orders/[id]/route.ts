@@ -11,7 +11,7 @@ export async function PATCH(
 ) {
     try {
         const orderId = params.id;
-        const { items, status, discount = 0 } = await req.json();
+        const { items, status, discount } = await req.json();
 
         // Validate status if provided
         if (status && !Object.values(OrderStatus).includes(status)) {
@@ -34,6 +34,22 @@ export async function PATCH(
 
         if (!existingOrder) {
             return NextResponse.json({ error: "Order not found" }, { status: 404 });
+        }
+
+        // If only discount is being updated
+        if (!status && !items && typeof discount === 'number') {
+            const updatedOrder = await prisma.order.update({
+                where: { id: orderId },
+                data: { discount },
+                include: {
+                    orderItems: {
+                        include: {
+                            product: true,
+                        },
+                    },
+                },
+            });
+            return NextResponse.json(updatedOrder);
         }
 
         // If only status is being updated
@@ -79,13 +95,38 @@ export async function PATCH(
                             });
                         }
                     }
+                    // Deduct stock if changing from not COMPLETED to COMPLETED
+                    else if (existingOrder.status !== OrderStatus.COMPLETED && status === OrderStatus.COMPLETED) {
+                        for (const item of existingOrder.orderItems) {
+                            const product = await tx.product.findUnique({
+                                where: { id: item.productId }
+                            });
+
+                            if (!product) {
+                                throw new Error(`Product ${item.productId} not found`);
+                            }
+
+                            if (product.stock < item.quantity) {
+                                throw new Error(`Insufficient stock for ${product.name}. Available: ${product.stock}, Required: ${item.quantity}`);
+                            }
+
+                            await tx.product.update({
+                                where: { id: item.productId },
+                                data: {
+                                    stock: {
+                                        decrement: item.quantity
+                                    }
+                                }
+                            });
+                        }
+                    }
 
                     // Update order status
                     return await tx.order.update({
                         where: { id: orderId },
                         data: {
                             status: status as OrderStatus,
-                            discount: discount
+                            discount: typeof discount === 'number' ? discount : existingOrder.discount
                         },
                         include: {
                             orderItems: {
@@ -264,63 +305,94 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     try {
         const orderId = params.id;
 
-        // First delete all order items associated with this order
-        await prisma.orderItem.deleteMany({
-            where: { orderId }
+        // First get the order with its items to handle stock restoration
+        const order = await prisma.order.findUnique({
+            where: { id: orderId },
+            include: {
+                orderItems: true
+            }
         });
 
-        // Then delete the order
-        await prisma.order.delete({
-            where: { id: orderId }
+        if (!order) {
+            return NextResponse.json({ error: "Order not found" }, { status: 404 });
+        }
+
+        // Handle stock restoration in a transaction
+        await prisma.$transaction(async (tx) => {
+            // Restore stock only for PENDING or PROCESSING orders
+            if (order.status === OrderStatus.PENDING || order.status === OrderStatus.PROCESSING) {
+                for (const item of order.orderItems) {
+                    await tx.product.update({
+                        where: { id: item.productId },
+                        data: {
+                            stock: {
+                                increment: item.quantity
+                            }
+                        }
+                    });
+                }
+            } else if (order.status === OrderStatus.COMPLETED) {
+                throw new Error("Cannot delete a completed order. Please cancel the order first if you need to return the items.");
+            }
+
+            // Delete all order items associated with this order
+            await tx.orderItem.deleteMany({
+                where: { orderId }
+            });
+
+            // Delete the order
+            await tx.order.delete({
+                where: { id: orderId }
+            });
         });
 
         return NextResponse.json({ success: true });
     } catch (error) {
         console.error("[ORDER_DELETE_ERROR]", error);
         return NextResponse.json({
-            error: "Failed to delete order",
-            details: error instanceof Error ? error.message : "Unknown error"
+            error: error instanceof Error ? error.message : "Failed to delete order",
+            details: error instanceof Error ? error.stack : undefined
         }, { status: 500 });
     }
 }
 
 // GET: Fetch single order
 export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+    req: NextRequest,
+    { params }: { params: { id: string } }
 ) {
-  try {
-    const order = await prisma.order.findUnique({
-      where: { id: params.id },
-      include: {
-        orderItems: {
-          include: {
-            product: {
-              select: {
-                id: true,
-                name: true,
-                price: true,
-                image: true
-              }
+    try {
+        const order = await prisma.order.findUnique({
+            where: { id: params.id },
+            include: {
+                orderItems: {
+                    include: {
+                        product: {
+                            select: {
+                                id: true,
+                                name: true,
+                                price: true,
+                                image: true
+                            }
+                        }
+                    }
+                }
             }
-          }
+        });
+
+        if (!order) {
+            return NextResponse.json(
+                { error: "Order not found" },
+                { status: 404 }
+            );
         }
-      }
-    });
 
-    if (!order) {
-      return NextResponse.json(
-        { error: "Order not found" },
-        { status: 404 }
-      );
+        return NextResponse.json(order);
+    } catch (error) {
+        console.error("[ORDER_GET_ERROR]", error);
+        return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 }
+        );
     }
-
-    return NextResponse.json(order);
-  } catch (error) {
-    console.error("[ORDER_GET_ERROR]", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
 }

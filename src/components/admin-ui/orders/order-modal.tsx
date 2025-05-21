@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { OrderItem, OrderStatus } from '@/interfaces/orders';
@@ -180,13 +180,16 @@ const OrderModal = () => {
     if (!isOpen) setEditData(null);
   };
 
+  const handleCancel = () => {
+    setOpen(false);
+    setEditData(null);
+  };
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="no-scrollbar h-[95vh] w-full max-w-md overflow-y-auto sm:max-w-5xl sm:rounded-lg">
-        <DialogHeader>
-          <DialogTitle>{editData ? t('components.admin-ui.order.order-modal.edit-title', 'Edit Order') : t('components.admin-ui.order.order-modal.create-title', 'Create New Order')}</DialogTitle>
-          <DialogDescription>{editData ? t('components.admin-ui.order.order-modal.edit-description', 'Modify the order details below') : t('components.admin-ui.order.order-modal.create-description', 'Add products to create a new order')}</DialogDescription>
-        </DialogHeader>
+        <DialogTitle>{editData ? t('components.admin-ui.order.order-modal.edit-title', 'Edit Order') : t('components.admin-ui.order.order-modal.create-title', 'Create New Order')}</DialogTitle>
+        <DialogDescription>{editData ? t('components.admin-ui.order.order-modal.edit-description', 'Modify the order details below') : t('components.admin-ui.order.order-modal.create-description', 'Add products to create a new order')}</DialogDescription>
         <div className="flex h-[480px] w-full flex-col md:flex-row">
           {/* Left Panel - Product Selection */}
           <div className="flex h-full max-w-1/2 flex-1 flex-col p-4">
@@ -248,7 +251,7 @@ const OrderModal = () => {
             </label>
             <div className="flex">
               <Input id="discount-amount" type="text" min="0" step="0.01" value={discountAmount} onChange={(e) => setDiscountAmount(e.target.value)} placeholder={t('components.summary.discount-amount')} className="rounded-r-none border-none outline-none focus:ring-0 focus:outline-none" />
-              <Button className="rounded-l-none" onClick={handleApplyDiscount} type="button">
+              <Button className="cursor-pointer rounded-l-none dark:bg-gray-800 dark:text-white" onClick={handleApplyDiscount} type="button">
                 {t('components.summary.apply-discount')}
               </Button>
             </div>
@@ -278,14 +281,11 @@ const OrderModal = () => {
             <Button
               type="button"
               variant="outline"
-              onClick={() => {
-                setOpen(false);
-                setEditData(null);
-              }}
-              className="h-11 px-6">
+              onClick={handleCancel}
+              className="h-11 cursor-pointer px-6">
               {t('components.admin-ui.order.order-modal.cancel')}
             </Button>
-            <Button type="submit" disabled={loading || !formData.orderItems?.length} onClick={handleSubmit} className="h-11 px-6">
+            <Button type="submit" disabled={loading || !formData.orderItems?.length} onClick={handleSubmit} className="h-11 cursor-pointer px-6 dark:bg-gray-800 dark:text-white">
               {loading ? t('components.admin-ui.order.order-modal.saving') : editData ? t('components.admin-ui.order.order-modal.edit-order') : t('components.admin-ui.order.order-modal.create-order')}
             </Button>
           </div>

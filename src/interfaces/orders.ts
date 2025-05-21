@@ -19,6 +19,7 @@ export interface OrderItem {
     product: OrderProduct;
     quantity: number;
     price: number;
+    discount: number;
     total: number;
     createdAt: string;
     updatedAt: string;

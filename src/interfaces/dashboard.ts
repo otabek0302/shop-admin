@@ -14,8 +14,9 @@ export interface DashboardData {
     productsInStore: number;
     soldProducts: number;
     outOfStockProducts: number;
-    totalStoreValue: number;
     totalRevenueOfProductsInStock: number;
+    soldProductsGrossValue: number;
+    totalDiscountGiven: number;
     dailyOrders: DailyPoint[];
     outOfStockProductsList: Array<{
         id: string;
@@ -24,6 +25,8 @@ export interface DashboardData {
             url: string;
         };
         price: number;
-        category: string;
+        category?: {
+            name: string;
+        } | null;
     }>;
 }

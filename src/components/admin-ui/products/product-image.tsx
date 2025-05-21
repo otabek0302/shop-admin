@@ -33,13 +33,7 @@ const ProductImage = ({ image, setImage, existingImage }: ProductImageProps) => 
         {image ? (
           <>
             <div className="relative h-48 w-48 overflow-hidden rounded-md shadow-md">
-              <Image 
-                src={URL.createObjectURL(image)} 
-                alt="Selected" 
-                fill 
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="rounded-md object-cover" 
-              />
+              <Image src={URL.createObjectURL(image)} alt="Selected" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="rounded-md object-cover" />
               <button type="button" onClick={removeImage} className="absolute top-2 right-2 rounded-full bg-white/80 p-1 hover:bg-white">
                 <X className="h-4 w-4 text-red-500" />
               </button>
@@ -49,25 +43,19 @@ const ProductImage = ({ image, setImage, existingImage }: ProductImageProps) => 
         ) : existingImage ? (
           <>
             <div className="relative h-48 w-48 overflow-hidden rounded-md shadow-md">
-              <Image 
-                src={existingImage.url} 
-                alt="Existing" 
-                fill 
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="rounded-md object-cover" 
-              />
+              <Image src={existingImage.url} alt="Existing" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="rounded-md object-cover" />
               <button type="button" onClick={removeImage} className="absolute top-2 right-2 rounded-full bg-white/80 p-1 hover:bg-white">
                 <X className="h-4 w-4 text-red-500" />
               </button>
             </div>
-            <p className="text-muted-foreground text-sm">{t('components.admin-ui.product.product-modal.current-image')}</p>
+            <p className="text-muted-foreground text-sm">{t('components.admin-ui.product.product-modal.image.current-image')}</p>
           </>
         ) : (
           <>
             <Upload className="h-12 w-12 text-blue-800" />
-            <p className="text-gray-600">{t('components.admin-ui.product.product-modal.image.image-placeholder')}</p>
-            <p className="text-sm text-gray-500">{t('components.admin-ui.product.product-modal.image.image-max-size')}</p>
-            <Button type="button" variant="outline" onClick={triggerBrowse} className="border-blue-800 text-blue-800">
+            <p className="text-gray-600 dark:text-muted-foreground">{t('components.admin-ui.product.product-modal.image.image-placeholder')}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-200">{t('components.admin-ui.product.product-modal.image.image-max-size')}</p>
+            <Button type="button" variant="outline" onClick={triggerBrowse} className="border-blue-800 text-blue-800 dark:bg-gray-800 dark:text-white cursor-pointer">
               {t('components.admin-ui.product.product-modal.image.browse-files')}
             </Button>
           </>
